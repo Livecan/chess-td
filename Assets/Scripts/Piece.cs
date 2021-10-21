@@ -24,13 +24,13 @@ public class Piece : MonoBehaviour
 
     private Position m_currentPosition;
     private Position m_targetPosition;
-    public Position Pos { get => m_targetPosition; }
+    public Position CurrentPosition { get => m_currentPosition; }
 
     private Piece m_attackPiece;
 
     public UnityEvent OnFinishedMove { get; private set; } = new UnityEvent();
 
-    private float m_movementSpeed = 1;
+    private float m_movementSpeed = 5;
 
     private void Start()
     {
@@ -51,19 +51,20 @@ public class Piece : MonoBehaviour
             float moveDistance = m_movementSpeed * Time.deltaTime;
             transform.position += new Vector3(direction.x, direction.y, direction.z) * moveDistance;
 
-            Vector3 targetPosition = m_targetPosition.ToVector3();
-            targetPosition.y = transform.position.y;
+            Vector3 targetPosition = m_targetPosition.ToVector3(transform.position.y);
 
             // when the piece is closer to the target position than the last move distance, it's reached the position
             if ((targetPosition - transform.position).magnitude < moveDistance)
             {
+                transform.position = targetPosition;
+
                 m_currentPosition = m_targetPosition;
                 m_targetPosition = null;
 
                 // if planned attack, do it before the end of the turn
                 if (m_attackPiece)
                 {
-                    throw new System.NotImplementedException();
+                    throw new System.NotImplementedException("Attack action not yet implemented.");
                     // Attack();
                 }
                 Debug.Log("Finished move.");
@@ -81,17 +82,22 @@ public class Piece : MonoBehaviour
 
     public void GoTo(Piece opponent)
     {
-        m_targetPosition = GetPositionBeforeAttack(m_targetPosition, opponent.Pos);
+        Debug.Log(m_currentPosition);
+        Debug.Log(opponent.CurrentPosition);
+        m_targetPosition = GetPositionBeforeAttack(m_currentPosition, opponent.CurrentPosition);
         m_attackPiece = opponent;
     }
 
     Position GetPositionBeforeAttack(Position initialPosition, Position targetPosition)
     {
-        Position positionBeforeAttack;// TODO: do the magic
-        throw new System.NotImplementedException();
+        Position deltaPosition = targetPosition - initialPosition;
+
+        Position positionBeforeAttack = initialPosition + deltaPosition.GetShorterPosition();
+
         return positionBeforeAttack;
     }
 
+    
     public class Position
     {
         public int Row { get; private set; }
@@ -110,5 +116,32 @@ public class Piece : MonoBehaviour
             this.Row = row;
             this.Column = column;
         }
+
+        public Position GetShorterPosition(int amount = 1)
+        {
+            int row = Row;
+            if (row > 0)
+            {
+                row -= amount;
+            }
+            else if (row < 0)
+            {
+                row += amount;
+            }
+            int column = Column;
+            if (column > 0)
+            {
+                column -= amount;
+            }
+            else if (column < 0)
+            {
+                column += amount;
+            }
+
+            return new Position(row, column);
+        }
+
+        public static Position operator -(Position b, Position a) => new Position(b.Row - a.Row, b.Column - a.Column);
+        public static Position operator +(Position a, Position delta) => new Position(a.Row + delta.Row, a.Column + delta.Column);
     }
 }

@@ -40,10 +40,12 @@ public class GameManager : MonoBehaviour
             new Turn(m_opponentActivePieces[1], new Piece.Position(5, 2)),
             new Turn(m_playerActivePieces[1], new Piece.Position(3, 2)),
             new Turn(m_opponentActivePieces[2], new Piece.Position(6, 1)),
-            new Turn(m_playerActivePieces[0], new Piece.Position(2, 1)),
+            new Turn(m_playerActivePieces[1], m_opponentActivePieces[1]),
             new Turn(m_opponentActivePieces[2], new Piece.Position(3, 1)),
-            new Turn(m_playerActivePieces[2], new Piece.Position(3, 3)),
+            new Turn(m_playerActivePieces[0], new Piece.Position(2, 1)),
             new Turn(m_opponentActivePieces[0], new Piece.Position(7, 1)),
+            new Turn(m_playerActivePieces[2], new Piece.Position(3, 3)),
+            //new Turn(m_playerActivePieces[1], m_opponentActivePieces[1]),
         };
 
         NextTurn();
@@ -59,7 +61,14 @@ public class GameManager : MonoBehaviour
     {
         if (turnIndex < turns.Length)
         {
-            turns[turnIndex].Piece.GoTo(turns[turnIndex].Position);
+            if (turns[turnIndex].AttackedPiece == null)
+            {
+                turns[turnIndex].Piece.GoTo(turns[turnIndex].Position);
+            }
+            else
+            {
+                turns[turnIndex].Piece.GoTo(turns[turnIndex].AttackedPiece);
+            }
             turnIndex++;
         }
     }
@@ -68,11 +77,18 @@ public class GameManager : MonoBehaviour
     {
         public Piece Piece;
         public Piece.Position Position;
+        public Piece AttackedPiece;
 
         public Turn(Piece piece, Piece.Position position)
         {
             this.Piece = piece;
             this.Position = position;
+        }
+
+        public Turn(Piece piece, Piece attackedPiece)
+        {
+            this.Piece = piece;
+            this.AttackedPiece = attackedPiece;
         }
     }
 }
