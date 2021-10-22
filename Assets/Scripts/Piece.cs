@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,7 @@ public class Piece : MonoBehaviour
             if (startPosition == null)
             {
                 startPosition = value;
+                m_currentPosition = value;
                 transform.position = value.ToVector3(transform.position.y);
             }
             else
@@ -29,17 +31,10 @@ public class Piece : MonoBehaviour
     private Piece m_attackPiece;
 
     public UnityEvent OnFinishedMove { get; private set; } = new UnityEvent();
+    protected int m_healthPoints = 1;
+    protected int m_attack = 1;
 
     private float m_movementSpeed = 5;
-
-    private void Start()
-    {
-        m_currentPosition = startPosition;
-
-        //float y = transform.position.y;
-        // @todo: figure out how to do this - maybe spawn with the GameManager instead???
-        //transform.position.Set(startPosition.ToVector3().x, transform.position.y, startPosition.ToVector3().z); // TODO: dont do double call to ToVector3
-    }
 
     // Update is called once per frame
     void Update()
@@ -64,8 +59,7 @@ public class Piece : MonoBehaviour
                 // if planned attack, do it before the end of the turn
                 if (m_attackPiece)
                 {
-                    throw new System.NotImplementedException("Attack action not yet implemented.");
-                    // Attack();
+                    Attack();
                 }
                 Debug.Log("Finished move.");
                 OnFinishedMove.Invoke();
@@ -73,13 +67,11 @@ public class Piece : MonoBehaviour
 
         }
     }
-
     public void GoTo(Position position)
     {
         m_targetPosition = position;
         m_attackPiece = null;
     }
-
     public void GoTo(Piece opponent)
     {
         Debug.Log(m_currentPosition);
@@ -87,7 +79,6 @@ public class Piece : MonoBehaviour
         m_targetPosition = GetPositionBeforeAttack(m_currentPosition, opponent.CurrentPosition);
         m_attackPiece = opponent;
     }
-
     Position GetPositionBeforeAttack(Position initialPosition, Position targetPosition)
     {
         Position deltaPosition = targetPosition - initialPosition;
@@ -96,8 +87,28 @@ public class Piece : MonoBehaviour
 
         return positionBeforeAttack;
     }
+    void Attack()
+    {
+        Position targetPosition = m_attackPiece.CurrentPosition;
+        // if the opponent gets destroyed, move to his position
+        if (m_attackPiece.TakeDamage(m_attack))
+        {
+            GoTo(targetPosition);
+        }
+    }
 
-    
+    bool TakeDamage(int attack)
+    {
+        m_healthPoints -= attack;
+        // if no HP left, destroy
+        if (m_healthPoints <= 0)
+        {
+            Destroy(this.gameObject);
+            return true;
+        }
+        return false;
+    }
+
     public class Position
     {
         public int Row { get; private set; }

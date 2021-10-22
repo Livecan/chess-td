@@ -45,7 +45,6 @@ public class GameManager : MonoBehaviour
             new Turn(m_playerActivePieces[0], new Piece.Position(2, 1)),
             new Turn(m_opponentActivePieces[0], new Piece.Position(7, 1)),
             new Turn(m_playerActivePieces[2], new Piece.Position(3, 3)),
-            //new Turn(m_playerActivePieces[1], m_opponentActivePieces[1]),
         };
 
         NextTurn();
