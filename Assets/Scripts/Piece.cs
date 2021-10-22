@@ -28,11 +28,14 @@ public class Piece : MonoBehaviour
     private Position m_targetPosition;
     public Position CurrentPosition { get => m_currentPosition; }
 
-    private Piece m_attackPiece;
+    private Piece m_attackedPiece;
 
     public UnityEvent OnFinishedMove { get; private set; } = new UnityEvent();
-    protected int m_healthPoints = 1;
-    protected int m_attack = 1;
+
+    [SerializeField] int m_healthPoints = 1;
+    public int HealthPoints { get => m_healthPoints; protected set => m_healthPoints = value; }
+    [SerializeField] int m_strength = 1;
+    public int Strength { get => m_strength; }
 
     private float m_movementSpeed = 5;
 
@@ -57,7 +60,7 @@ public class Piece : MonoBehaviour
                 m_targetPosition = null;
 
                 // if planned attack, do it before the end of the turn
-                if (m_attackPiece)
+                if (m_attackedPiece)
                 {
                     Attack();
                 }
@@ -70,14 +73,14 @@ public class Piece : MonoBehaviour
     public void GoTo(Position position)
     {
         m_targetPosition = position;
-        m_attackPiece = null;
+        m_attackedPiece = null;
     }
     public void GoTo(Piece opponent)
     {
         Debug.Log(m_currentPosition);
         Debug.Log(opponent.CurrentPosition);
         m_targetPosition = GetPositionBeforeAttack(m_currentPosition, opponent.CurrentPosition);
-        m_attackPiece = opponent;
+        m_attackedPiece = opponent;
     }
     Position GetPositionBeforeAttack(Position initialPosition, Position targetPosition)
     {
@@ -89,9 +92,9 @@ public class Piece : MonoBehaviour
     }
     void Attack()
     {
-        Position targetPosition = m_attackPiece.CurrentPosition;
+        Position targetPosition = m_attackedPiece.CurrentPosition;
         // if the opponent gets destroyed, move to his position
-        if (m_attackPiece.TakeDamage(m_attack))
+        if (m_attackedPiece.TakeDamage(m_strength))
         {
             GoTo(targetPosition);
         }
