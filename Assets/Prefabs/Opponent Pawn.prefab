@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6329237362009882856}
   - component: {fileID: 8573713603016080318}
   - component: {fileID: 5307053901488870715}
-  - component: {fileID: 7247398782080597594}
+  - component: {fileID: 8568633590442660995}
   m_Layer: 0
   m_Name: Opponent Pawn
   m_TagString: Opponent
@@ -96,7 +96,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7247398782080597594
+--- !u!114 &8568633590442660995
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,7 +105,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3613191825141600394}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53529896333e03441a92426b5306a229, type: 3}
+  m_Script: {fileID: 11500000, guid: 46705f35c2a9aad44a1f7bee7a8d547d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_healthPoints: 1

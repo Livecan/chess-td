@@ -90,6 +90,10 @@ public class Piece : MonoBehaviour
 
         return positionBeforeAttack;
     }
+    public virtual List<Position> GetAvailablePositions()  // TODO: this will become a abstract method once the Queen has a child script
+    {
+        throw new NotImplementedException();
+    }
     void Attack()
     {
         Position targetPosition = m_attackedPiece.CurrentPosition;

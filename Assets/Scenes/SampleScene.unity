@@ -310,7 +310,7 @@ GameObject:
   - component: {fileID: 1026243796}
   - component: {fileID: 1026243795}
   m_Layer: 0
-  m_Name: UserInput
+  m_Name: User Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -342,6 +342,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1613147453
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1613147454}
+  m_Layer: 0
+  m_Name: Opponent AI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1613147454
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613147453}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.3589797, y: 3.4373105, z: -4.4501553}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1934970192
 GameObject:
   m_ObjectHideFlags: 0
@@ -353,7 +383,7 @@ GameObject:
   - component: {fileID: 1934970194}
   - component: {fileID: 1934970193}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: Game Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -372,12 +402,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPiecesPrefabs:
-  - {fileID: 461112277137033623, guid: 2994afdda6705ee48a5f4ad12f600226, type: 3}
-  - {fileID: 1582719288, guid: 6b58a668ec02b55468b2ea651135bced, type: 3}
+  - {fileID: -7379260473652658209, guid: 2994afdda6705ee48a5f4ad12f600226, type: 3}
+  - {fileID: 6517917752550254139, guid: 6b58a668ec02b55468b2ea651135bced, type: 3}
   - {fileID: 8660360164726548268, guid: 09cd41f185cde4043a364434037dbf3d, type: 3}
   opponentPiecesPrefabs:
-  - {fileID: 7247398782080597594, guid: e25d2ff900dadab41a9f1972b664f750, type: 3}
-  - {fileID: 685528080402559466, guid: c2fc5bbd40c6ac840a10db4dcf34b8b8, type: 3}
+  - {fileID: 8568633590442660995, guid: e25d2ff900dadab41a9f1972b664f750, type: 3}
+  - {fileID: -6916654165025687073, guid: c2fc5bbd40c6ac840a10db4dcf34b8b8, type: 3}
   - {fileID: 1524424340, guid: 047d9ab76eaf625409c4979b89a8bc4f, type: 3}
 --- !u!4 &1934970194
 Transform:

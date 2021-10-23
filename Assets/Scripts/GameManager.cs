@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     private List<Turn> turns = new List<Turn>();
     private int turnIndex = 0;
 
+    public readonly int fieldRows = 9, fieldColumns = 5;
+
     // Start is called before the first frame update
     void Start()
     {
