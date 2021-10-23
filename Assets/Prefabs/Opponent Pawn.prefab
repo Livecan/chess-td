@@ -108,5 +108,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53529896333e03441a92426b5306a229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testCurrentPosition: {x: 0, y: 0}
-  testTargetPosition: {x: 0, y: 0}
+  m_healthPoints: 1
+  m_strength: 1
