@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +10,7 @@ public class GameManager : MonoBehaviour
     private List<Piece> m_opponentActivePieces = new List<Piece>();
 
     private bool playerTurn = true;
-    private Turn[] turns;
+    private List<Turn> turns = new List<Turn>();
     private int turnIndex = 0;
 
     // Start is called before the first frame update
@@ -34,7 +32,7 @@ public class GameManager : MonoBehaviour
             m_opponentActivePieces[i].OnFinishedMove.AddListener(NextTurn);
         }
 
-        turns = new Turn[]
+        turns.AddRange(new Turn[]
         {
             new Turn(m_playerActivePieces[0], new Piece.Position(1, 1)),
             new Turn(m_opponentActivePieces[1], new Piece.Position(5, 2)),
@@ -58,7 +56,7 @@ public class GameManager : MonoBehaviour
 
     void NextTurn()
     {
-        if (turnIndex < turns.Length)
+        if (turnIndex < turns.Count)
         {
             if (turns[turnIndex].AttackedPiece == null)
             {
