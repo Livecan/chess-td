@@ -22,36 +22,43 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             Piece playerPiece = Instantiate(playerPiecesPrefabs[i]);
-            playerPiece.StartPosition = new Piece.Position(0, i + 1);
+            playerPiece.StartPosition = new Position(0, i + 1);
             m_playerActivePieces.Add(playerPiece);
             m_playerActivePieces[i].OnFinishedMove.AddListener(NextTurn);
 
             Piece opponentPiece = Instantiate(opponentPiecesPrefabs[i]);
-            opponentPiece.StartPosition = new Piece.Position(8, i + 1);
+            opponentPiece.StartPosition = new Position(8, i + 1);
             m_opponentActivePieces.Add(opponentPiece);
             m_opponentActivePieces[i].OnFinishedMove.AddListener(NextTurn);
         }
 
         turns.AddRange(new Turn[]
         {
-            new Turn(m_playerActivePieces[0], new Piece.Position(1, 1)),
-            new Turn(m_opponentActivePieces[1], new Piece.Position(5, 2)),
-            new Turn(m_playerActivePieces[1], new Piece.Position(3, 2)),
-            new Turn(m_opponentActivePieces[2], new Piece.Position(6, 1)),
+            new Turn(m_playerActivePieces[0], new Position(1, 1)),
+            new Turn(m_opponentActivePieces[1], new Position(5, 2)),
+            new Turn(m_playerActivePieces[1], new Position(3, 2)),
+            new Turn(m_opponentActivePieces[2], new Position(6, 1)),
             new Turn(m_playerActivePieces[1], m_opponentActivePieces[1]),
-            new Turn(m_opponentActivePieces[2], new Piece.Position(3, 1)),
-            new Turn(m_playerActivePieces[0], new Piece.Position(2, 1)),
-            new Turn(m_opponentActivePieces[0], new Piece.Position(7, 1)),
-            new Turn(m_playerActivePieces[2], new Piece.Position(3, 3)),
-        };
+            new Turn(m_opponentActivePieces[2], new Position(3, 1)),
+            new Turn(m_playerActivePieces[0], new Position(2, 1)),
+            new Turn(m_opponentActivePieces[0], new Position(7, 1)),
+            new Turn(m_playerActivePieces[2], new Position(3, 3)),
+        });
 
         NextTurn();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void AddTurn(Piece piece, Piece target)
     {
-        
+        turns.Add(new Turn(piece, target));
+        NextTurn();
+
+    }
+
+    public void AddTurn(Piece piece, Position target)
+    {
+        turns.Add(new Turn(piece, target));
+        NextTurn();
     }
 
     void NextTurn()
@@ -73,10 +80,10 @@ public class GameManager : MonoBehaviour
     public class Turn
     {
         public Piece Piece;
-        public Piece.Position Position;
+        public Position Position;
         public Piece AttackedPiece;
 
-        public Turn(Piece piece, Piece.Position position)
+        public Turn(Piece piece, Position position)
         {
             this.Piece = piece;
             this.Position = position;
