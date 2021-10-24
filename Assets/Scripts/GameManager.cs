@@ -72,11 +72,11 @@ public class GameManager : MonoBehaviour
 
         if (turnIndex == 0)
         {
-            playerController.GetTurn(m_playerActivePieces, m_opponentActivePieces);
+            playerController.GetTurn(m_playerActivePieces.ToList(), m_opponentActivePieces.ToList());
         }
         else
         {
-            opponentController.GetTurn(m_opponentActivePieces, m_playerActivePieces);
+            opponentController.GetTurn(m_opponentActivePieces.ToList(), m_playerActivePieces.ToList());
         }
 
     }
