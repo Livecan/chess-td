@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Position
+public class Position : System.IEquatable<Position>
 {
     public int Row { get; private set; }
     public int Column { get; private set; }
@@ -49,6 +49,11 @@ public class Position
         }
 
         return new Position(row, column);
+    }
+
+    public bool Equals(Position other)
+    {
+        return this.Column == other.Column && this.Row == other.Row;
     }
 
     public static Position operator -(Position b, Position a) => new Position(b.Row - a.Row, b.Column - a.Column);

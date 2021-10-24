@@ -20,20 +20,20 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerPiecesPrefabs.ForEach(piece => piece.OnFinishedMove.AddListener(NextTurn));
-        opponentPiecesPrefabs.ForEach(piece => piece.OnFinishedMove.AddListener(NextTurn));
+        playerPiecesPrefabs.ForEach(piece => piece.OnFinishedMove.AddListener(() => NextTurn()));
+        opponentPiecesPrefabs.ForEach(piece => piece.OnFinishedMove.AddListener(() => NextTurn()));
 
         for (int i = 0; i < 3; i++)
         {
             Piece playerPiece = Instantiate(playerPiecesPrefabs[i]);
             playerPiece.StartPosition = new Position(0, i + 1);
             m_playerActivePieces.Add(playerPiece);
-            m_playerActivePieces[i].OnFinishedMove.AddListener(NextTurn);
+            m_playerActivePieces[i].OnFinishedMove.AddListener(() => NextTurn());
 
             Piece opponentPiece = Instantiate(opponentPiecesPrefabs[i]);
             opponentPiece.StartPosition = new Position(8, i + 1);
             m_opponentActivePieces.Add(opponentPiece);
-            m_opponentActivePieces[i].OnFinishedMove.AddListener(NextTurn);
+            m_opponentActivePieces[i].OnFinishedMove.AddListener(() => NextTurn());
         }
 
 
@@ -51,24 +51,34 @@ public class GameManager : MonoBehaviour
 
     void NextTurn(Turn turn)
     {
-        if (turn.AttackedPiece == null)
+        if (!turn.Piece.GetAvailablePositions().Contains(turn.Position) && !turn.Piece.GetAvailablePositions().Contains(turn.AttackedPiece?.CurrentPosition))
         {
-            turn.Piece.GoTo(turn.Position);
+            NextTurn(false);
         }
         else
         {
-            turn.Piece.GoTo(turn.AttackedPiece);
+            if (turn.AttackedPiece == null)
+            {
+                turn.Piece.GoTo(turn.Position);
+            }
+            else
+            {
+                turn.Piece.GoTo(turn.AttackedPiece);
+            }
         }
 
         m_playerActivePieces = FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Player")).ToList();
         m_opponentActivePieces = FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Opponent")).ToList();
     }
 
-    void NextTurn()
+    void NextTurn(bool nextPlayer = true)
     {
-        turnIndex = (turnIndex + 1) % 2;
+        if (nextPlayer)
+        {
+            turnIndex = (turnIndex + 1) % 2;
+        }
 
-        Debug.Log(turnIndex);
+        Debug.Log("Player turn: " + turnIndex);
 
         if (turnIndex == 0)
         {

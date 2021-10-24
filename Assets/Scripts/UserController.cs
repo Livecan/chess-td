@@ -73,10 +73,8 @@ public class UserController : MonoBehaviour, IController
     void SelectPosition(Position selectedPosition)
     {
         Debug.Log("Selected position");
-        if (m_selectedPiece != null)
+        if (m_selectedPiece != null && m_selectedPiece.GetAvailablePositions().Contains(selectedPosition))
         {
-            // TODO: consider GameManager subscribing to events here instead of calling GameManager.AddTurn method.
-            //      in which case I can have a Controller Interface that the Player and the Opponent will both use.
             SubmitTurn(new Turn(m_selectedPiece, selectedPosition));
         }
     }
@@ -84,11 +82,13 @@ public class UserController : MonoBehaviour, IController
     void SelectPiece(Piece selectedPiece)
     {
         Debug.Log(selectedPiece);
+        // the player picks his piece to play
         if (myPieces.Contains(selectedPiece))
         {
             m_selectedPiece = selectedPiece;
         }
-        else if (m_selectedPiece != null && opponentPieces.Contains(selectedPiece))
+        // the player must have chosen his piece to play and the selectedPiece is the opponent, the opponent's position must be allowed
+        else if (m_selectedPiece != null && m_selectedPiece.GetAvailablePositions().Contains(selectedPiece.CurrentPosition))
         {
             SubmitTurn(new Turn(m_selectedPiece, selectedPiece));
         }
