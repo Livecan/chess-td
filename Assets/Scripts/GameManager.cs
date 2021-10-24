@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -9,9 +10,10 @@ public class GameManager : MonoBehaviour
     private List<Piece> m_playerActivePieces = new List<Piece>();
     private List<Piece> m_opponentActivePieces = new List<Piece>();
 
-    private bool playerTurn = true;
-    private List<Turn> turns = new List<Turn>();
-    private int turnIndex = 0;
+    private int turnIndex = 1;
+
+    private IController playerController;
+    private IController opponentController;
 
     public readonly int fieldRows = 9, fieldColumns = 5;
 
@@ -34,67 +36,48 @@ public class GameManager : MonoBehaviour
             m_opponentActivePieces[i].OnFinishedMove.AddListener(NextTurn);
         }
 
-        turns.AddRange(new Turn[]
+
+        SetupController(playerController = FindObjectOfType<UserController>());
+        opponentController = playerController;  // TODO: temporary until AI
+
+        NextTurn();
+    }
+
+    private void SetupController(IController playerController)
+    {
+        playerController.TurnCallback = NextTurn;
+        playerController.GetTurn(m_playerActivePieces, m_opponentActivePieces);
+    }
+
+    void NextTurn(Turn turn)
+    {
+        if (turn.AttackedPiece == null)
         {
-            new Turn(m_playerActivePieces[0], new Position(1, 1)),
-            new Turn(m_opponentActivePieces[1], new Position(5, 2)),
-            new Turn(m_playerActivePieces[1], new Position(3, 2)),
-            new Turn(m_opponentActivePieces[2], new Position(6, 1)),
-            new Turn(m_playerActivePieces[1], m_opponentActivePieces[1]),
-            new Turn(m_opponentActivePieces[2], new Position(3, 1)),
-            new Turn(m_playerActivePieces[0], new Position(2, 1)),
-            new Turn(m_opponentActivePieces[0], new Position(7, 1)),
-            new Turn(m_playerActivePieces[2], new Position(3, 3)),
-        });
+            turn.Piece.GoTo(turn.Position);
+        }
+        else
+        {
+            turn.Piece.GoTo(turn.AttackedPiece);
+        }
 
-        NextTurn();
-    }
-
-    public void AddTurn(Piece piece, Piece target)
-    {
-        turns.Add(new Turn(piece, target));
-        NextTurn();
-
-    }
-
-    public void AddTurn(Piece piece, Position target)
-    {
-        turns.Add(new Turn(piece, target));
-        NextTurn();
+        m_playerActivePieces = FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Player")).ToList();
+        m_opponentActivePieces = FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Opponent")).ToList();
     }
 
     void NextTurn()
     {
-        if (turnIndex < turns.Count)
+        turnIndex = (turnIndex + 1) % 2;
+
+        Debug.Log(turnIndex);
+
+        if (turnIndex == 0)
         {
-            if (turns[turnIndex].AttackedPiece == null)
-            {
-                turns[turnIndex].Piece.GoTo(turns[turnIndex].Position);
-            }
-            else
-            {
-                turns[turnIndex].Piece.GoTo(turns[turnIndex].AttackedPiece);
-            }
-            turnIndex++;
+            playerController.GetTurn(m_playerActivePieces, m_opponentActivePieces);
         }
-    }
-
-    public class Turn
-    {
-        public Piece Piece;
-        public Position Position;
-        public Piece AttackedPiece;
-
-        public Turn(Piece piece, Position position)
+        else
         {
-            this.Piece = piece;
-            this.Position = position;
+            opponentController.GetTurn(m_opponentActivePieces, m_playerActivePieces);
         }
 
-        public Turn(Piece piece, Piece attackedPiece)
-        {
-            this.Piece = piece;
-            this.AttackedPiece = attackedPiece;
-        }
     }
 }
