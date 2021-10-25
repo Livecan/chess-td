@@ -4,32 +4,32 @@ using UnityEngine;
 
 public class Position : System.IEquatable<Position>
 {
-    public int Row { get; private set; }
     public int Column { get; private set; }
+    public int Row { get; private set; }
 
-    private static float rowVectorAdjustment = 4;
-    private static float columnVectorAdjustment = 2;
+    private static float columnVectorAdjustment = 4;
+    private static float rowVectorAdjustment = 2;
 
     public Vector3 ToVector3(float y = 0)
     {
-        return new Vector3(Row - rowVectorAdjustment, y, Column - columnVectorAdjustment);
+        return new Vector3(Column - columnVectorAdjustment, y, Row - rowVectorAdjustment);
     }
 
     public Position(Vector3 planeCoordinates)
     {
-        this.Row = Mathf.RoundToInt(planeCoordinates.x + rowVectorAdjustment);
-        this.Column = Mathf.RoundToInt(planeCoordinates.z + columnVectorAdjustment);
+        this.Column = Mathf.RoundToInt(planeCoordinates.x + columnVectorAdjustment);
+        this.Row = Mathf.RoundToInt(planeCoordinates.z + rowVectorAdjustment);
     }
 
-    public Position(int row, int column)
+    public Position(int column, int row)
     {
-        this.Row = row;
         this.Column = column;
+        this.Row = row;
     }
 
     public Position GetShorterPosition(int amount = 1)
     {
-        int row = Row;
+        int row = Column;
         if (row > 0)
         {
             row -= amount;
@@ -38,7 +38,7 @@ public class Position : System.IEquatable<Position>
         {
             row += amount;
         }
-        int column = Column;
+        int column = Row;
         if (column > 0)
         {
             column -= amount;
@@ -53,9 +53,9 @@ public class Position : System.IEquatable<Position>
 
     public bool Equals(Position other)
     {
-        return this.Column == other.Column && this.Row == other.Row;
+        return this.Row == other.Row && this.Column == other.Column;
     }
 
-    public static Position operator -(Position b, Position a) => new Position(b.Row - a.Row, b.Column - a.Column);
-    public static Position operator +(Position a, Position delta) => new Position(a.Row + delta.Row, a.Column + delta.Column);
+    public static Position operator -(Position b, Position a) => new Position(b.Column - a.Column, b.Row - a.Row);
+    public static Position operator +(Position a, Position delta) => new Position(a.Column + delta.Column, a.Row + delta.Row);
 }

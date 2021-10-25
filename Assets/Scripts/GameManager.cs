@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     private IController playerController;
     private IController opponentController;
 
-    public readonly int fieldRows = 9, fieldColumns = 5;
+    public readonly int fieldColumns = 9, fieldRows = 5;
 
     // Start is called before the first frame update
     void Start()
