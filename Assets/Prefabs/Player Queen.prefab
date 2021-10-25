@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6002509186937222914}
   - component: {fileID: 8205834978172861187}
   - component: {fileID: 1518394749453655869}
-  - component: {fileID: 8660360164726548268}
+  - component: {fileID: 1938649998004659075}
   m_Layer: 0
   m_Name: Player Queen
   m_TagString: Player
@@ -97,7 +97,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8660360164726548268
+--- !u!114 &1938649998004659075
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,7 +106,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 816613769806286854}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53529896333e03441a92426b5306a229, type: 3}
+  m_Script: {fileID: 11500000, guid: 6176ec36d0b77ee4bae1d5c040e7abf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_healthPoints: 3

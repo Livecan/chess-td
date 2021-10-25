@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Piece : MonoBehaviour
+public abstract class Piece : MonoBehaviour
 {
     private Position startPosition;
     public Position StartPosition
@@ -90,10 +90,8 @@ public class Piece : MonoBehaviour
 
         return positionBeforeAttack;
     }
-    public virtual List<Position> GetAvailablePositions()  // TODO: this will become a abstract method once the Queen has a child script
-    {
-        throw new NotImplementedException();
-    }
+    public abstract List<Position> GetAvailablePositions();
+
     void Attack()
     {
         Position targetPosition = m_attackedPiece.CurrentPosition;
@@ -114,5 +112,31 @@ public class Piece : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    // A helper that return up to `amount` positions in the given `deltaPosition` direction or until a Position with an opponent (included)
+    protected static List<Position> GetAvailablePositions(GameManager gameManager, Position currentPosition, List<Piece> allPieces, Position deltaPosition, int amount)
+    {
+        List<Position> availablePositions = new List<Position>();
+
+        Position candidatePosition = currentPosition;
+
+        for (int i = 1; i <= amount; i++)
+        {
+            candidatePosition += deltaPosition;
+
+            if (candidatePosition.Column < 0 || candidatePosition.Column >= gameManager.fieldColumns || candidatePosition.Row < 0 || candidatePosition.Row >= gameManager.fieldRows)
+            {
+                break;
+            }
+
+            availablePositions.Add(candidatePosition);
+
+            if (allPieces.Find(piece => piece.CurrentPosition.Column == candidatePosition.Column && piece.CurrentPosition.Row == candidatePosition.Row))
+            {
+                break;
+            }
+        }
+        return availablePositions;
     }
 }

@@ -27,11 +27,20 @@ public class GameManager : MonoBehaviour
         {
             Piece playerPiece = Instantiate(playerPiecesPrefabs[i]);
             playerPiece.StartPosition = new Position(0, i + 1);
+            if (typeof(Pawn).IsInstanceOfType(playerPiece))
+            {
+                ((Pawn)playerPiece).DeltaForwardPosition = new Position(1, 0);
+            }
+
             m_playerActivePieces.Add(playerPiece);
             m_playerActivePieces[i].OnFinishedMove.AddListener(() => NextTurn());
 
             Piece opponentPiece = Instantiate(opponentPiecesPrefabs[i]);
             opponentPiece.StartPosition = new Position(8, i + 1);
+            if (typeof(Pawn).IsInstanceOfType(opponentPiece))
+            {
+                ((Pawn)opponentPiece).DeltaForwardPosition = new Position(-1, 0);
+            }
             m_opponentActivePieces.Add(opponentPiece);
             m_opponentActivePieces[i].OnFinishedMove.AddListener(() => NextTurn());
         }
