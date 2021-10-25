@@ -96,7 +96,7 @@ public class UserController : MonoBehaviour, IController
 
     private bool GetPositionHasPiece(Position position, out Piece piece)
     {
-        piece = FindObjectsOfType<Piece>().FirstOrDefault(piece => piece.CurrentPosition.Row == position.Row && piece.CurrentPosition.Column == position.Column);
+        piece = FindObjectsOfType<Piece>().FirstOrDefault(piece => piece.CurrentPosition.Column == position.Column && piece.CurrentPosition.Row == position.Row);
         return piece != null;
     }
 
