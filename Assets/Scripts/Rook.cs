@@ -18,10 +18,10 @@ public class Rook : Piece
         List<Piece> allPieces = new List<Piece>(FindObjectsOfType<Piece>());
         List<Position> availablePositions = new List<Position>();
 
-        availablePositions.AddRange(GetAvailablePositions(gameManager, CurrentPosition, allPieces, new Position(1, 0), moveLength));
-        availablePositions.AddRange(GetAvailablePositions(gameManager, CurrentPosition, allPieces, new Position(0, 1), moveLength));
-        availablePositions.AddRange(GetAvailablePositions(gameManager, CurrentPosition, allPieces, new Position(-1, 0), moveLength));
-        availablePositions.AddRange(GetAvailablePositions(gameManager, CurrentPosition, allPieces, new Position(0, -1), moveLength));
+        availablePositions.AddRange(GetAvailablePositions(gameManager, this, allPieces, new Position(1, 0), moveLength));
+        availablePositions.AddRange(GetAvailablePositions(gameManager, this, allPieces, new Position(0, 1), moveLength));
+        availablePositions.AddRange(GetAvailablePositions(gameManager, this, allPieces, new Position(-1, 0), moveLength));
+        availablePositions.AddRange(GetAvailablePositions(gameManager, this, allPieces, new Position(0, -1), moveLength));
 
         return availablePositions;
     }

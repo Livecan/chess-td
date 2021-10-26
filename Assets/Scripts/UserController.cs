@@ -28,7 +28,7 @@ public class UserController : MonoBehaviour, IController
         set
         {
             if (m_attackDirection != null) {
-                throw new System.InvalidOperationException("Turn callback already initialized");
+                throw new System.InvalidOperationException("Attack direction already initialized");
             }
             m_attackDirection = value;
         }
@@ -72,7 +72,6 @@ public class UserController : MonoBehaviour, IController
 
     void SelectPosition(Position selectedPosition)
     {
-        Debug.Log("Selected position");
         if (m_selectedPiece != null && m_selectedPiece.GetAvailablePositions().Contains(selectedPosition))
         {
             SubmitTurn(new Turn(m_selectedPiece, selectedPosition));
@@ -109,9 +108,8 @@ public class UserController : MonoBehaviour, IController
 
     private void SubmitTurn(Turn turn)
     {
-        Debug.Log("SubmitTurn");
         isMyTurn = false;
         m_selectedPiece = null;
-        m_turnCallback.Invoke(turn);
+        m_turnCallback(turn);
     }
 }

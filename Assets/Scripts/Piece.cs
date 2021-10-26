@@ -64,8 +64,10 @@ public abstract class Piece : MonoBehaviour
                 {
                     Attack();
                 }
-                Debug.Log("Finished move.");
-                OnFinishedMove.Invoke();
+                else
+                {
+                    OnFinishedMove.Invoke();
+                }
             }
 
         }
@@ -115,24 +117,25 @@ public abstract class Piece : MonoBehaviour
     }
 
     // A helper that return up to `amount` positions in the given `deltaPosition` direction or until a Position with an opponent (included)
-    protected static List<Position> GetAvailablePositions(GameManager gameManager, Position currentPosition, List<Piece> allPieces, Position deltaPosition, int amount)
+    protected static List<Position> GetAvailablePositions(GameManager gameManager, Piece currentPiece, List<Piece> allPieces, Position deltaPosition, int amount)
     {
         List<Position> availablePositions = new List<Position>();
 
-        Position candidatePosition = currentPosition;
+        Position candidatePosition = currentPiece.CurrentPosition;
 
         for (int i = 1; i <= amount; i++)
         {
             candidatePosition += deltaPosition;
 
-            if (candidatePosition.Column < 0 || candidatePosition.Column >= gameManager.fieldColumns || candidatePosition.Row < 0 || candidatePosition.Row >= gameManager.fieldRows)
+            if (candidatePosition.Column < 0 || candidatePosition.Column >= gameManager.fieldColumns || candidatePosition.Row < 0 || candidatePosition.Row >= gameManager.fieldRows
+                || allPieces.Exists(piece => piece.CurrentPosition.Equals(candidatePosition) && piece.tag == currentPiece.tag))
             {
                 break;
             }
 
             availablePositions.Add(candidatePosition);
 
-            if (allPieces.Find(piece => piece.CurrentPosition.Column == candidatePosition.Column && piece.CurrentPosition.Row == candidatePosition.Row))
+            if (allPieces.Find(piece => piece.CurrentPosition.Equals(candidatePosition)))
             {
                 break;
             }

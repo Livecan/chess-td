@@ -351,8 +351,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1613147454}
+  - component: {fileID: 1613147455}
   m_Layer: 0
-  m_Name: Opponent AI
+  m_Name: AI Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -372,6 +373,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1613147455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613147453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbbf1368120d4e24cb9b3137f0de7479, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1760353487 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 816613769806286854, guid: 09cd41f185cde4043a364434037dbf3d, type: 3}

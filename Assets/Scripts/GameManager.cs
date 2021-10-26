@@ -46,16 +46,17 @@ public class GameManager : MonoBehaviour
         }
 
 
-        SetupController(playerController = FindObjectOfType<UserController>());
-        opponentController = playerController;  // TODO: temporary until AI
+        SetupController(playerController = FindObjectOfType<UserController>(), IController.Direction.Right);
+        SetupController(opponentController = FindObjectOfType<AIController>(), IController.Direction.Left);
 
         NextTurn();
     }
 
-    private void SetupController(IController playerController)
+    private void SetupController(IController controller, IController.Direction attackDirection)
     {
-        playerController.TurnCallback = NextTurn;
-        playerController.GetTurn(m_playerActivePieces, m_opponentActivePieces);
+        controller.TurnCallback = NextTurn;
+        controller.AttackDirection = attackDirection;
+
     }
 
     void NextTurn(Turn turn)
@@ -75,13 +76,12 @@ public class GameManager : MonoBehaviour
                 turn.Piece.GoTo(turn.AttackedPiece);
             }
         }
-
-        m_playerActivePieces = FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Player")).ToList();
-        m_opponentActivePieces = FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Opponent")).ToList();
     }
 
     void NextTurn(bool nextPlayer = true)
     {
+        m_playerActivePieces = FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Player")).ToList();
+        m_opponentActivePieces = FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Opponent")).ToList();
         if (nextPlayer)
         {
             turnIndex = (turnIndex + 1) % 2;

@@ -27,7 +27,7 @@ public class Pawn : Piece
         List<Piece> allPieces = new List<Piece>(FindObjectsOfType<Piece>());
         List<Position> availablePositions = new List<Position>();
         Position forwardPosition = CurrentPosition + DeltaForwardPosition;
-        if (!allPieces.Any(piece => piece.CurrentPosition == forwardPosition))
+        if (!allPieces.Any(piece => piece.CurrentPosition.Equals(forwardPosition)))
         {
             availablePositions.Add(forwardPosition);
         }
