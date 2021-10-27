@@ -56,12 +56,14 @@ public class AIController : MonoBehaviour, IController
         {
             foreach (Position availablePosition in myPiece.GetAvailablePositions())
             {
+                // Calculating relative score - the change from current state if myPiece moves to availablePosition
                 int score = 0;
                 score -= GetPieceScore(myPiece, AttackDirection);
                 score += GetPieceScore(myPiece, AttackDirection, availablePosition);
 
                 Piece attackedOpponent = opponentPieces.Find(piece => piece.CurrentPosition.Equals(availablePosition));
-                
+
+                // If the move includes taking opponent's piece, first I need to add the previous state of the opponent's piece to the score and then subtract the next state against me                
                 if (attackedOpponent != null)
                 {
                     score += GetPieceScore(attackedOpponent, m_attackDirection != IController.Direction.Left ? IController.Direction.Left : IController.Direction.Right);
@@ -72,7 +74,8 @@ public class AIController : MonoBehaviour, IController
                         attackedOpponent.HealthPoints - myPiece.Strength
                     );
                 }
-                Debug.Log("Score: " + availablePosition.Column + ", " + availablePosition.Row + ": " + score);
+
+                // If this score is higher than maxScore, then use currently calculated turn; if it is the same, there is a 50% chance of using currently calculated turn
                 if (score > maxScore || (score == maxScore && Random.Range(0, 1f) < 0.5f))
                 {
                     maxScore = score;
@@ -90,6 +93,7 @@ public class AIController : MonoBehaviour, IController
         m_turnCallback(nextTurn);
     }
 
+    // Evaluation function for a piece on the board
     private int GetPieceScore(Piece piece, IController.Direction attackDirection, Position position = null, int health = int.MinValue)
     {
         if (health != int.MinValue && health <= 0)

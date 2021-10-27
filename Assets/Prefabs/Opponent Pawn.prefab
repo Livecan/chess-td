@@ -110,3 +110,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_healthPoints: 1
   m_strength: 1
+  isForwardLeft: 1

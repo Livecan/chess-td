@@ -79,12 +79,12 @@ public abstract class Piece : MonoBehaviour
     }
     public void GoTo(Piece opponent)
     {
-        Debug.Log(m_currentPosition);
-        Debug.Log(opponent.CurrentPosition);
         m_targetPosition = GetPositionBeforeAttack(m_currentPosition, opponent.CurrentPosition);
         m_attackedPiece = opponent;
     }
-    Position GetPositionBeforeAttack(Position initialPosition, Position targetPosition)
+
+    // when not managing to destroy a piece in the attack, knowing the last position before attack is necessary
+    protected virtual Position GetPositionBeforeAttack(Position initialPosition, Position targetPosition)
     {
         Position deltaPosition = targetPosition - initialPosition;
 
@@ -97,10 +97,14 @@ public abstract class Piece : MonoBehaviour
     void Attack()
     {
         Position targetPosition = m_attackedPiece.CurrentPosition;
-        // if the opponent gets destroyed, move to his position
+        // if the opponent gets destroyed, move to his position, if not, finish turn here
         if (m_attackedPiece.TakeDamage(m_strength))
         {
             GoTo(targetPosition);
+        }
+        else
+        {
+            OnFinishedMove.Invoke();
         }
     }
 
@@ -127,7 +131,7 @@ public abstract class Piece : MonoBehaviour
         {
             candidatePosition += deltaPosition;
 
-            if (candidatePosition.Column < 0 || candidatePosition.Column >= gameManager.fieldColumns || candidatePosition.Row < 0 || candidatePosition.Row >= gameManager.fieldRows
+            if (candidatePosition.Column < 0 || candidatePosition.Column >= gameManager.m_fieldColumns || candidatePosition.Row < 0 || candidatePosition.Row >= gameManager.m_fieldRows
                 || allPieces.Exists(piece => piece.CurrentPosition.Equals(candidatePosition) && piece.tag == currentPiece.tag))
             {
                 break;

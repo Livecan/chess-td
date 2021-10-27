@@ -4,61 +4,65 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private List<Piece> playerPiecesPrefabs;
-    [SerializeField] private List<Piece> opponentPiecesPrefabs;
+    [SerializeField] private SpawnManager m_opponentSpawnManager;
+    [SerializeField] private List<Piece> m_playerPiecesPrefabs;
+    [SerializeField] private List<Piece> m_opponentPiecesPrefabs;
 
-    private List<Piece> m_playerActivePieces = new List<Piece>();
-    private List<Piece> m_opponentActivePieces = new List<Piece>();
+    private int m_turnIndex = 1;
 
-    private int turnIndex = 1;
+    private IController m_playerController;
+    private IController m_opponentController;
 
-    private IController playerController;
-    private IController opponentController;
-
-    public readonly int fieldColumns = 9, fieldRows = 5;
+    public readonly int m_fieldColumns = 9, m_fieldRows = 5;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerPiecesPrefabs.ForEach(piece => piece.OnFinishedMove.AddListener(() => NextTurn()));
-        opponentPiecesPrefabs.ForEach(piece => piece.OnFinishedMove.AddListener(() => NextTurn()));
+        // Initialize SpawnManager with spawning positions - the first column on opponent's side
+        m_opponentSpawnManager.Initialize(
+            new Position[] {
+                new Position(m_fieldColumns - 1, 0),
+                new Position(m_fieldColumns - 1, 1),
+                new Position(m_fieldColumns - 1, 2),
+                new Position(m_fieldColumns - 1, 3),
+                new Position(m_fieldColumns - 1, 4),
+            }
+        );
+
+        m_playerPiecesPrefabs.ForEach(piece => piece.OnFinishedMove.AddListener(() => NextTurn()));
+        m_opponentPiecesPrefabs.ForEach(piece => piece.OnFinishedMove.AddListener(() => NextTurn()));
 
         for (int i = 0; i < 3; i++)
         {
-            Piece playerPiece = Instantiate(playerPiecesPrefabs[i]);
-            playerPiece.StartPosition = new Position(0, i + 1);
-            if (typeof(Pawn).IsInstanceOfType(playerPiece))
-            {
-                ((Pawn)playerPiece).DeltaForwardPosition = new Position(1, 0);
-            }
-
-            m_playerActivePieces.Add(playerPiece);
-            m_playerActivePieces[i].OnFinishedMove.AddListener(() => NextTurn());
-
-            Piece opponentPiece = Instantiate(opponentPiecesPrefabs[i]);
-            opponentPiece.StartPosition = new Position(8, i + 1);
-            if (typeof(Pawn).IsInstanceOfType(opponentPiece))
-            {
-                ((Pawn)opponentPiece).DeltaForwardPosition = new Position(-1, 0);
-            }
-            m_opponentActivePieces.Add(opponentPiece);
-            m_opponentActivePieces[i].OnFinishedMove.AddListener(() => NextTurn());
+            InitializePiece(m_playerPiecesPrefabs[i], new Position(0, i + 1));
+            InitializePiece(m_opponentPiecesPrefabs[i], new Position(8, i + 1));
         }
 
 
-        SetupController(playerController = FindObjectOfType<UserController>(), IController.Direction.Right);
-        SetupController(opponentController = FindObjectOfType<AIController>(), IController.Direction.Left);
+        InitializeController(m_playerController = FindObjectOfType<UserController>(), IController.Direction.Right);
+        InitializeController(m_opponentController = FindObjectOfType<AIController>(), IController.Direction.Left);
 
         NextTurn();
     }
 
-    private void SetupController(IController controller, IController.Direction attackDirection)
+    // Instantiates a Piece according to a prefab and assigns is the given position and the NextTurn listener
+    public Piece InitializePiece(Piece piecePrefab, Position position)
+    {
+        Piece piece = Instantiate(piecePrefab);
+        piece.StartPosition = position;
+        piece.OnFinishedMove.AddListener(() => NextTurn());
+        return piece;
+    }
+
+    // Initializes controller's with necessary values - especially important for the AI Controller
+    private void InitializeController(IController controller, IController.Direction attackDirection)
     {
         controller.TurnCallback = NextTurn;
         controller.AttackDirection = attackDirection;
 
     }
 
+    // Performs the given turn if it is valid
     void NextTurn(Turn turn)
     {
         if (!turn.Piece.GetAvailablePositions().Contains(turn.Position) && !turn.Piece.GetAvailablePositions().Contains(turn.AttackedPiece?.CurrentPosition))
@@ -78,24 +82,26 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Starts a turn for the next player (or asks the current player for the correct turn)
     void NextTurn(bool nextPlayer = true)
     {
-        m_playerActivePieces = FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Player")).ToList();
-        m_opponentActivePieces = FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Opponent")).ToList();
+        List<Piece> m_playerActivePieces = FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Player")).ToList();
+        List<Piece> m_opponentActivePieces = FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Opponent")).ToList();
         if (nextPlayer)
         {
-            turnIndex = (turnIndex + 1) % 2;
+            m_turnIndex = (m_turnIndex + 1) % 2;
         }
 
-        Debug.Log("Player turn: " + turnIndex);
+        Debug.Log("Player turn: " + m_turnIndex);
 
-        if (turnIndex == 0)
+        if (m_turnIndex == 0)
         {
-            playerController.GetTurn(m_playerActivePieces.ToList(), m_opponentActivePieces.ToList());
+            m_opponentSpawnManager.Spawn();
+            m_playerController.GetTurn(m_playerActivePieces.ToList(), m_opponentActivePieces.ToList());
         }
         else
         {
-            opponentController.GetTurn(m_opponentActivePieces.ToList(), m_playerActivePieces.ToList());
+            m_opponentController.GetTurn(m_opponentActivePieces.ToList(), m_playerActivePieces.ToList());
         }
 
     }

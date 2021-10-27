@@ -5,21 +5,22 @@ using UnityEngine;
 
 public class Pawn : Piece
 {
+    // Simplifies initializing of deltaForwardPosition, to use in Unity editor, needs to be compatible type - bool, not Position;
+    // DeltaForwardPosition is set accordingly in Start().
+    public bool isForwardLeft;
+
     Position deltaForwardPosition;
     public Position DeltaForwardPosition
     {
-        set
-        {
-            if (deltaForwardPosition != null)
-            {
-                throw new System.InvalidOperationException("Delta forward position already initialized");
-            }
-            deltaForwardPosition = value;
-        }
         get
         {
             return deltaForwardPosition;
         }
+    }
+
+    void Start()
+    {
+        deltaForwardPosition = isForwardLeft ? new Position(-1, 0) : new Position(1, 0);
     }
 
     public override List<Position> GetAvailablePositions()

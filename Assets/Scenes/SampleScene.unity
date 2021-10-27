@@ -340,7 +340,55 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1281664080
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1281664082}
+  - component: {fileID: 1281664081}
+  m_Layer: 0
+  m_Name: Opponent Spawn Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1281664081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281664080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd98d53b6fb9adb489fe1fe2d735c01f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_piecesPrefabs:
+  - {fileID: 8568633590442660995, guid: e25d2ff900dadab41a9f1972b664f750, type: 3}
+  - {fileID: -6916654165025687073, guid: c2fc5bbd40c6ac840a10db4dcf34b8b8, type: 3}
+  - {fileID: 6150405335743821551, guid: 047d9ab76eaf625409c4979b89a8bc4f, type: 3}
+  m_spawnChances: 190000000f00000005000000
+--- !u!4 &1281664082
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281664080}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.3589797, y: 3.4373105, z: -4.4501553}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1613147453
 GameObject:
@@ -371,7 +419,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1613147455
 MonoBehaviour:
@@ -452,11 +500,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f703e48724458064cad2d2695d96c1c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPiecesPrefabs:
+  m_opponentSpawnManager: {fileID: 1281664081}
+  m_playerPiecesPrefabs:
   - {fileID: -7379260473652658209, guid: 2994afdda6705ee48a5f4ad12f600226, type: 3}
   - {fileID: 6517917752550254139, guid: 6b58a668ec02b55468b2ea651135bced, type: 3}
   - {fileID: 1938649998004659075, guid: 09cd41f185cde4043a364434037dbf3d, type: 3}
-  opponentPiecesPrefabs:
+  m_opponentPiecesPrefabs:
   - {fileID: 8568633590442660995, guid: e25d2ff900dadab41a9f1972b664f750, type: 3}
   - {fileID: -6916654165025687073, guid: c2fc5bbd40c6ac840a10db4dcf34b8b8, type: 3}
   - {fileID: 6150405335743821551, guid: 047d9ab76eaf625409c4979b89a8bc4f, type: 3}
@@ -472,7 +521,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2013614095
 GameObject:
