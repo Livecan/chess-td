@@ -39,11 +39,14 @@ public class UserController : MonoBehaviour, IController
 
     private bool isMyTurn = false;
 
+    private RewardManager rewardManager;
+
     // TODO: make a parent object from Piece and Position?
 
     private void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
+        rewardManager = gameObject.GetComponent<RewardManager>();
     }
 
     // Update is called once per frame
@@ -80,7 +83,6 @@ public class UserController : MonoBehaviour, IController
 
     void SelectPiece(Piece selectedPiece)
     {
-        Debug.Log(selectedPiece);
         // the player picks his piece to play
         if (myPieces.Contains(selectedPiece))
         {

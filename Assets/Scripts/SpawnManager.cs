@@ -36,7 +36,7 @@ public class SpawnManager : MonoBehaviour
 
                 Position spawnPosition = availablePositions[positionIndex];
 
-                gameManager.InitializePiece(m_piecesPrefabs[i], spawnPosition);
+                m_piecesPrefabs[i].GetCopy(spawnPosition);
 
                 availablePositions.Remove(spawnPosition);
             }

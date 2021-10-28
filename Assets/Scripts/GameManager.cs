@@ -10,8 +10,8 @@ public class GameManager : MonoBehaviour
 
     private int m_turnIndex = 1;
 
-    private IController m_playerController;
-    private IController m_opponentController;
+    private UserController m_playerController;
+    private AIController m_opponentController;
 
     public readonly int m_fieldColumns = 9, m_fieldRows = 5;
 
@@ -29,32 +29,31 @@ public class GameManager : MonoBehaviour
             }
         );
 
-        m_playerPiecesPrefabs.ForEach(piece => piece.OnFinishedMove.AddListener(() => NextTurn()));
+        m_playerController = FindObjectOfType<UserController>();
+        m_opponentController = FindObjectOfType<AIController>();
+
+        InitializeController(m_playerController, IController.Direction.Right);
+        InitializeController(m_opponentController, IController.Direction.Left);
+
+        RewardManager playerRewardManager = m_playerController.gameObject.GetComponent<RewardManager>();
+
+        m_playerPiecesPrefabs.ForEach(piece => {
+            piece.OnFinishedMove.AddListener(() => NextTurn());
+            piece.OnKill.AddListener(playerRewardManager.AddKill);
+        });
+
         m_opponentPiecesPrefabs.ForEach(piece => piece.OnFinishedMove.AddListener(() => NextTurn()));
 
         for (int i = 0; i < 3; i++)
         {
-            InitializePiece(m_playerPiecesPrefabs[i], new Position(0, i + 1));
-            InitializePiece(m_opponentPiecesPrefabs[i], new Position(8, i + 1));
+            m_playerPiecesPrefabs[i].GetCopy(new Position(0, i + 1));
+            m_opponentPiecesPrefabs[i].GetCopy(new Position(8, i + 1));
         }
-
-
-        InitializeController(m_playerController = FindObjectOfType<UserController>(), IController.Direction.Right);
-        InitializeController(m_opponentController = FindObjectOfType<AIController>(), IController.Direction.Left);
 
         NextTurn();
     }
 
-    // Instantiates a Piece according to a prefab and assigns is the given position and the NextTurn listener
-    public Piece InitializePiece(Piece piecePrefab, Position position)
-    {
-        Piece piece = Instantiate(piecePrefab);
-        piece.StartPosition = position;
-        piece.OnFinishedMove.AddListener(() => NextTurn());
-        return piece;
-    }
-
-    // Initializes controller's with necessary values - especially important for the AI Controller
+    // Initializes controller's with necessary values
     private void InitializeController(IController controller, IController.Direction attackDirection)
     {
         controller.TurnCallback = NextTurn;

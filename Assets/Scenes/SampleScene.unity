@@ -309,6 +309,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1057929430}
   - component: {fileID: 1057929429}
+  - component: {fileID: 1057929431}
   m_Layer: 0
   m_Name: User Controller
   m_TagString: Untagged
@@ -342,6 +343,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1057929431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057929428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b688cb1714435e74182501c71d3998a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myPrefabs: []
 --- !u!1 &1281664080
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,10 +386,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_piecesPrefabs:
-  - {fileID: 8568633590442660995, guid: e25d2ff900dadab41a9f1972b664f750, type: 3}
   - {fileID: -6916654165025687073, guid: c2fc5bbd40c6ac840a10db4dcf34b8b8, type: 3}
   - {fileID: 6150405335743821551, guid: 047d9ab76eaf625409c4979b89a8bc4f, type: 3}
-  m_spawnChances: 190000000f00000005000000
+  - {fileID: 8568633590442660995, guid: e25d2ff900dadab41a9f1972b664f750, type: 3}
+  - {fileID: 8568633590442660995, guid: e25d2ff900dadab41a9f1972b664f750, type: 3}
+  - {fileID: 8568633590442660995, guid: e25d2ff900dadab41a9f1972b664f750, type: 3}
+  - {fileID: 8568633590442660995, guid: e25d2ff900dadab41a9f1972b664f750, type: 3}
+  - {fileID: 8568633590442660995, guid: e25d2ff900dadab41a9f1972b664f750, type: 3}
+  m_spawnChances: 0f000000050000006400000064000000640000006400000064000000
 --- !u!4 &1281664082
 Transform:
   m_ObjectHideFlags: 0
@@ -452,6 +470,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_healthPoints: 1
   m_strength: 1
+  m_movementSpeed: 5
 --- !u!1 &1873897927 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1390594600674166645, guid: 047d9ab76eaf625409c4979b89a8bc4f, type: 3}
@@ -471,6 +490,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_healthPoints: 1
   m_strength: 1
+  m_movementSpeed: 5
 --- !u!1 &1934970192
 GameObject:
   m_ObjectHideFlags: 0

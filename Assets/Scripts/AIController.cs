@@ -41,7 +41,6 @@ public class AIController : MonoBehaviour, IController
 
     public void GetTurn(List<Piece> myPieces, List<Piece> opponentPieces)
     {
-        Debug.Log("Get AI Turn");
         StartCoroutine(ProcessNextTurn(myPieces, opponentPieces));
     }
 

@@ -32,12 +32,23 @@ public abstract class Piece : MonoBehaviour
 
     public UnityEvent OnFinishedMove { get; private set; } = new UnityEvent();
 
+    public UnityEvent<Piece> OnKill { get; private set; } = new UnityEvent<Piece>();
+
     [SerializeField] int m_healthPoints = 1;
     public int HealthPoints { get => m_healthPoints; protected set => m_healthPoints = value; }
     [SerializeField] int m_strength = 1;
     public int Strength { get => m_strength; }
+    
+    [SerializeField] float m_movementSpeed = 5;
 
-    private float m_movementSpeed = 5;
+    public Piece GetCopy(Position currentPosition)
+    {
+        Piece copy = Instantiate(this);
+        copy.OnKill = OnKill;
+        copy.OnFinishedMove = OnFinishedMove;
+        copy.StartPosition = currentPosition;
+        return copy;
+    }
 
     // Update is called once per frame
     void Update()
@@ -100,6 +111,7 @@ public abstract class Piece : MonoBehaviour
         // if the opponent gets destroyed, move to his position, if not, finish turn here
         if (m_attackedPiece.TakeDamage(m_strength))
         {
+            OnKill.Invoke(m_attackedPiece);
             GoTo(targetPosition);
         }
         else
