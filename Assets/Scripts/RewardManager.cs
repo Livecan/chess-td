@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RewardManager : MonoBehaviour
+public class RewardManager : MonoBehaviour, ISpawnManager
 {
     [SerializeField] List<Piece> myPrefabs;
     [SerializeField] List<int> prices;

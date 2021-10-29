@@ -3,17 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SpawnManager : MonoBehaviour
+public class RandomSpawnManager : MonoBehaviour, ISpawnManager
 {
     [SerializeField] List<Piece> m_piecesPrefabs;
     [SerializeField] List<int> m_spawnChances;
     IList<Position> m_spawnPositions;
-    GameManager gameManager;
-
-    private void Start()
-    {
-        gameManager = FindObjectOfType<GameManager>();
-    }
 
     public void Initialize(IEnumerable<Position> spawnPositions)
     {

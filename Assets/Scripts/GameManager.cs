@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private SpawnManager m_opponentSpawnManager;
     [SerializeField] private List<Piece> m_playerPiecesPrefabs;
     [SerializeField] private List<Piece> m_opponentPiecesPrefabs;
 
@@ -18,8 +17,11 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        InitializeController(playerController.GetComponent<UserController>(), IController.Direction.Right);
+        InitializeController(opponentController.GetComponent<AIController>(), IController.Direction.Left);
+
         // Initialize SpawnManager with spawning positions - the first column on opponent's side
-        m_opponentSpawnManager.Initialize(
+        opponentController.GetComponent<ISpawnManager>().Initialize(
             new Position[] {
                 new Position(m_fieldColumns - 1, 0),
                 new Position(m_fieldColumns - 1, 1),
@@ -28,9 +30,6 @@ public class GameManager : MonoBehaviour
                 new Position(m_fieldColumns - 1, 4),
             }
         );
-        
-        InitializeController(playerController.GetComponent<UserController>(), IController.Direction.Right);
-        InitializeController(opponentController.GetComponent<AIController>(), IController.Direction.Left);
 
         RewardManager playerRewardManager = playerController.GetComponent<RewardManager>();
 
@@ -103,12 +102,12 @@ public class GameManager : MonoBehaviour
 
         if (m_turnIndex == 0)
         {
-            m_opponentSpawnManager.Spawn();
+            opponentController.GetComponent<ISpawnManager>().Spawn();
             playerController.GetComponent<UserController>().GetTurn(m_playerActivePieces.ToList(), m_opponentActivePieces.ToList());
         }
         else
         {
-            playerController.GetComponent<RewardManager>().Spawn();
+            playerController.GetComponent<ISpawnManager>().Spawn();
             opponentController.GetComponent<AIController>().GetTurn(m_opponentActivePieces.ToList(), m_playerActivePieces.ToList());
         }
 
