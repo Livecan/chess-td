@@ -8,10 +8,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<Piece> m_playerPiecesPrefabs;
     [SerializeField] private List<Piece> m_opponentPiecesPrefabs;
 
-    private int m_turnIndex = 1;
+    [SerializeField] private GameObject playerController;
+    [SerializeField] private GameObject opponentController;
 
-    private UserController m_playerController;
-    private AIController m_opponentController;
+    private int m_turnIndex = 1;
 
     public readonly int m_fieldColumns = 9, m_fieldRows = 5;
 
@@ -28,14 +28,22 @@ public class GameManager : MonoBehaviour
                 new Position(m_fieldColumns - 1, 4),
             }
         );
+        
+        InitializeController(playerController.GetComponent<UserController>(), IController.Direction.Right);
+        InitializeController(opponentController.GetComponent<AIController>(), IController.Direction.Left);
 
-        m_playerController = FindObjectOfType<UserController>();
-        m_opponentController = FindObjectOfType<AIController>();
+        RewardManager playerRewardManager = playerController.GetComponent<RewardManager>();
 
-        InitializeController(m_playerController, IController.Direction.Right);
-        InitializeController(m_opponentController, IController.Direction.Left);
-
-        RewardManager playerRewardManager = m_playerController.gameObject.GetComponent<RewardManager>();
+        // Initialize PlayerRewardManager similarly to Opponent SpawnManager - the first column on player's side
+        playerRewardManager.Initialize(
+            new Position[] {
+                new Position(0, 0),
+                new Position(0, 1),
+                new Position(0, 2),
+                new Position(0, 3),
+                new Position(0, 4),
+            }
+        );
 
         m_playerPiecesPrefabs.ForEach(piece => {
             piece.OnFinishedMove.AddListener(() => NextTurn());
@@ -96,11 +104,12 @@ public class GameManager : MonoBehaviour
         if (m_turnIndex == 0)
         {
             m_opponentSpawnManager.Spawn();
-            m_playerController.GetTurn(m_playerActivePieces.ToList(), m_opponentActivePieces.ToList());
+            playerController.GetComponent<UserController>().GetTurn(m_playerActivePieces.ToList(), m_opponentActivePieces.ToList());
         }
         else
         {
-            m_opponentController.GetTurn(m_opponentActivePieces.ToList(), m_playerActivePieces.ToList());
+            playerController.GetComponent<RewardManager>().Spawn();
+            opponentController.GetComponent<AIController>().GetTurn(m_opponentActivePieces.ToList(), m_playerActivePieces.ToList());
         }
 
     }

@@ -15,9 +15,9 @@ public class SpawnManager : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
     }
 
-    public void Initialize(IEnumerable<Position> m_spawnPositions)
+    public void Initialize(IEnumerable<Position> spawnPositions)
     {
-        this.m_spawnPositions = m_spawnPositions.ToList();
+        this.m_spawnPositions = spawnPositions.ToList();
     }
 
     public void Spawn()
