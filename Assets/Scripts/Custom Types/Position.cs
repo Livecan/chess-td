@@ -27,6 +27,11 @@ public class Position : System.IEquatable<Position>
         this.Row = row;
     }
 
+    public bool IsInArea(int left, int top, int right, int bottom)
+    {
+        return Column >= left && Column <= right && Row >= bottom && Row <= top;
+    }
+
     public Position GetShorterPosition(int amount = 1)
     {
         int row = Column;

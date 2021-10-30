@@ -38,7 +38,7 @@ public abstract class Piece : MonoBehaviour
     public int HealthPoints { get => m_healthPoints; protected set => m_healthPoints = value; }
     [SerializeField] int m_strength = 1;
     public int Strength { get => m_strength; }
-    
+
     [SerializeField] float m_movementSpeed = 5;
 
     public Piece GetCopy(Position currentPosition)
@@ -143,7 +143,7 @@ public abstract class Piece : MonoBehaviour
         {
             candidatePosition += deltaPosition;
 
-            if (candidatePosition.Column < 0 || candidatePosition.Column >= gameManager.m_fieldColumns || candidatePosition.Row < 0 || candidatePosition.Row >= gameManager.m_fieldRows
+            if (!candidatePosition.IsInArea(0, gameManager.FieldRows - 1, gameManager.FieldColumns - 1, 0)
                 || allPieces.Exists(piece => piece.CurrentPosition.Equals(candidatePosition) && piece.tag == currentPiece.tag))
             {
                 break;

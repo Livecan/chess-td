@@ -12,7 +12,22 @@ public class GameManager : MonoBehaviour
 
     private int m_turnIndex = 1;
 
-    public readonly int m_fieldColumns = 9, m_fieldRows = 5;
+    public int FieldColumns { get; private set; } = 9;
+    public int FieldRows { get; private set; } = 5;
+
+    private static GameManager gameManager;
+
+    public static GameManager Manager
+    {
+        get
+        {
+            if (gameManager == null)
+            {
+                gameManager = FindObjectOfType<GameManager>();
+            }
+            return gameManager;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -23,11 +38,11 @@ public class GameManager : MonoBehaviour
         // Initialize SpawnManager with spawning positions - the first column on opponent's side
         opponentController.GetComponent<ISpawnManager>().Initialize(
             new Position[] {
-                new Position(m_fieldColumns - 1, 0),
-                new Position(m_fieldColumns - 1, 1),
-                new Position(m_fieldColumns - 1, 2),
-                new Position(m_fieldColumns - 1, 3),
-                new Position(m_fieldColumns - 1, 4),
+                new Position(FieldColumns - 1, 0),
+                new Position(FieldColumns - 1, 1),
+                new Position(FieldColumns - 1, 2),
+                new Position(FieldColumns - 1, 3),
+                new Position(FieldColumns - 1, 4),
             }
         );
 
