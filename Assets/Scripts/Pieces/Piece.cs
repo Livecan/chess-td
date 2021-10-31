@@ -31,11 +31,18 @@ public abstract class Piece : MonoBehaviour
     private Piece m_attackedPiece;
 
     public UnityEvent OnFinishedMove { get; private set; } = new UnityEvent();
-
     public UnityEvent<Piece> OnKill { get; private set; } = new UnityEvent<Piece>();
+    public UnityEvent<int> OnChangeHP { get; private set; } = new UnityEvent<int>();
 
     [SerializeField] int m_healthPoints = 1;
-    public int HealthPoints { get => m_healthPoints; protected set => m_healthPoints = value; }
+    public int HealthPoints {
+        get => m_healthPoints;
+        protected set
+        {
+            m_healthPoints = value;
+            OnChangeHP.Invoke(value);
+        }
+    }
     [SerializeField] int m_strength = 1;
     public int Strength { get => m_strength; }
 
@@ -122,9 +129,9 @@ public abstract class Piece : MonoBehaviour
 
     bool TakeDamage(int attack)
     {
-        m_healthPoints -= attack;
+        HealthPoints -= attack;
         // if no HP left, destroy
-        if (m_healthPoints <= 0)
+        if (HealthPoints <= 0)
         {
             Destroy(this.gameObject);
             return true;
