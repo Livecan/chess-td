@@ -34,11 +34,17 @@ public abstract class Piece : MonoBehaviour
     public UnityEvent<Piece> OnKill { get; private set; } = new UnityEvent<Piece>();
     public UnityEvent<int> OnChangeHP { get; private set; } = new UnityEvent<int>();
 
-    [SerializeField] int m_healthPoints = 1;
+    [SerializeField] int maxHitPoints = 0;
+
+    int m_healthPoints = 1;
     public int HealthPoints {
         get => m_healthPoints;
         protected set
         {
+            if (maxHitPoints == 0)
+            {
+                maxHitPoints = value;
+            }
             m_healthPoints = value;
             OnChangeHP.Invoke(m_healthPoints);
         }
@@ -55,6 +61,11 @@ public abstract class Piece : MonoBehaviour
         copy.OnFinishedMove = OnFinishedMove;
         copy.StartPosition = currentPosition;
         return copy;
+    }
+
+    private void Start()
+    {
+        HealthPoints = maxHitPoints;
     }
 
     // Update is called once per frame
