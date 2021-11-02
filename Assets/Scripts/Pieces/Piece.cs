@@ -40,7 +40,7 @@ public abstract class Piece : MonoBehaviour
         protected set
         {
             m_healthPoints = value;
-            OnChangeHP.Invoke(value);
+            OnChangeHP.Invoke(m_healthPoints);
         }
     }
     [SerializeField] int m_strength = 1;

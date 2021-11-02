@@ -36,8 +36,6 @@ public class PieceInfoBar : MonoBehaviour
 
         for (int i = 1; i < piece.Strength; i++)
         {
-            Debug.Log(strengthIcon.rectTransform.rect.width);
-
             RawImage imageClone = Instantiate(strengthIcon, strengthPanel.transform);
             imageClone.rectTransform.localPosition = new Vector3(i * strengthIcon.rectTransform.rect.width, 0, 0);
         }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class RewardManager : MonoBehaviour, ISpawnManager
 {
@@ -12,19 +13,30 @@ public class RewardManager : MonoBehaviour, ISpawnManager
 
     IList<Piece> spawnQueue = new List<Piece>();
 
+    public UnityEvent<int> OnBalanceChanged { get; private set; } = new UnityEvent<int>();
+
     int balance = 0;
+    int Balance
+    {
+        get => balance;
+        set
+        {
+            balance = value;
+            OnBalanceChanged.Invoke(balance);
+        }
+    }
 
     public void AddKill(Piece piece)
     {
-        balance += piece.Strength;
-        Debug.Log("Reward balance: " + balance);
+        Balance += piece.Strength;
+        Debug.Log("Reward balance: " + Balance);
     }
 
     public void PurchaseUnit(Piece chosenPrefab)
     {
         int prefabIndex = myPrefabs.IndexOf(chosenPrefab);
-        if (balance >= prices[prefabIndex]) {
-            balance -= prices[prefabIndex];
+        if (Balance >= prices[prefabIndex]) {
+            Balance -= prices[prefabIndex];
             spawnQueue.Add(chosenPrefab);
         }
     }
