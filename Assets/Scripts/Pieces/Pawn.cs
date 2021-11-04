@@ -18,8 +18,9 @@ public class Pawn : Piece
         }
     }
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         deltaForwardPosition = isForwardLeft ? new Position(-1, 0) : new Position(1, 0);
     }
 

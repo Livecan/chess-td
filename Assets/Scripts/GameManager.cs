@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject playerController;
     [SerializeField] private GameObject opponentController;
 
+    private ISpawnManager m_powerUpSpawnManager;
+
     private int m_turnIndex = 1;
 
     public int FieldColumns { get; private set; } = 9;
@@ -56,6 +58,27 @@ public class GameManager : MonoBehaviour
                 new Position(0, 2),
                 new Position(0, 3),
                 new Position(0, 4),
+            }
+        );
+
+        m_powerUpSpawnManager = FindObjectOfType<PowerUpSpawnManager>();
+        m_powerUpSpawnManager.Initialize(
+            new Position[] {
+                new Position(3, 0),
+                new Position(3, 1),
+                new Position(3, 2),
+                new Position(3, 3),
+                new Position(3, 4),
+                new Position(4, 0),
+                new Position(4, 1),
+                new Position(4, 2),
+                new Position(4, 3),
+                new Position(4, 4),
+                new Position(5, 0),
+                new Position(5, 1),
+                new Position(5, 2),
+                new Position(5, 3),
+                new Position(5, 4),
             }
         );
 
@@ -122,6 +145,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            m_powerUpSpawnManager.Spawn();
             playerController.GetComponent<ISpawnManager>().Spawn();
             opponentController.GetComponent<AIController>().GetTurn(m_opponentActivePieces.ToList(), m_playerActivePieces.ToList());
         }

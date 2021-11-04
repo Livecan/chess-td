@@ -2,17 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealingPowerUp : MonoBehaviour
+public class HealingPowerUp : PowerUp
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    private Position m_position;
+    public override Position Position {
+        get => m_position;
+        set
+        {
+            m_position = value;
+            transform.position = m_position.ToVector3(transform.position.y);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        
+        Debug.Log("Healing trigger");
+#nullable enable
+        Piece? otherPiece = other.gameObject.GetComponent<Piece>();
+        if (otherPiece != null)
+        {
+            otherPiece.HealthPoints = otherPiece.MaxHitPoints;
+            Destroy(this.gameObject);
+        }
+#nullable restore
     }
 }

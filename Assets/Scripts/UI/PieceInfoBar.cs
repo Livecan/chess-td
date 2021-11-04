@@ -30,7 +30,7 @@ public class PieceInfoBar : MonoBehaviour
     void Start()
     {
         Slider.onValueChanged.AddListener(UpdateTextValue);
-        Slider.maxValue = piece.HealthPoints;
+        Slider.maxValue = piece.MaxHitPoints;
         Slider.value = piece.HealthPoints;
         piece.OnChangeHP.AddListener(UpdateValue);
 

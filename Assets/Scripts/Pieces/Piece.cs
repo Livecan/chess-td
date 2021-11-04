@@ -36,10 +36,12 @@ public abstract class Piece : MonoBehaviour
 
     [SerializeField] int maxHitPoints = 0;
 
+    public int MaxHitPoints { get => maxHitPoints; }
+
     int m_healthPoints = 1;
     public int HealthPoints {
         get => m_healthPoints;
-        protected set
+        set
         {
             if (maxHitPoints == 0)
             {
@@ -63,13 +65,13 @@ public abstract class Piece : MonoBehaviour
         return copy;
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         HealthPoints = maxHitPoints;
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         // The piece moves as long as it has a target to move to
         if (m_targetPosition != null)
