@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealingPowerUp : PowerUp
+public class StrengthPowerUp : PowerUp
 {
     protected override void OnTriggerEnter(Collider other)
     {
@@ -10,9 +11,14 @@ public class HealingPowerUp : PowerUp
         Piece? otherPiece = other.gameObject.GetComponent<Piece>();
         if (otherPiece != null)
         {
-            otherPiece.HealthPoints = otherPiece.MaxHitPoints;
+            AssignPieceStrengthBonus(otherPiece);
             Destroy(this.gameObject);
         }
 #nullable restore
+    }
+
+    private void AssignPieceStrengthBonus(Piece piece)
+    {
+        StrengthBonus.Create(piece);
     }
 }

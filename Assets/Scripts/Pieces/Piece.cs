@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -32,7 +33,7 @@ public abstract class Piece : MonoBehaviour
 
     public UnityEvent OnFinishedMove { get; private set; } = new UnityEvent();
     public UnityEvent<Piece> OnKill { get; private set; } = new UnityEvent<Piece>();
-    public UnityEvent<int> OnChangeHP { get; private set; } = new UnityEvent<int>();
+    public UnityEvent<int> OnChangeHP { get; } = new UnityEvent<int>();
 
     [SerializeField] int maxHitPoints = 0;
 
@@ -51,8 +52,23 @@ public abstract class Piece : MonoBehaviour
             OnChangeHP.Invoke(m_healthPoints);
         }
     }
+
+    public UnityEvent<int> OnChangeStrengthBonus { get; } = new UnityEvent<int>();
+
+    private List<StrengthBonus> m_strengthBonus = new List<StrengthBonus>();
+    public void AddStrengthBonus(StrengthBonus bonus)
+    {
+        m_strengthBonus.Add(bonus);
+        OnChangeStrengthBonus.Invoke(Strength);
+    }
+    public void RemoveStrengthBonus(StrengthBonus bonus)
+    {
+        m_strengthBonus.Remove(bonus);
+        OnChangeStrengthBonus.Invoke(Strength);
+    }
+
     [SerializeField] int m_strength = 1;
-    public int Strength { get => m_strength; }
+    public int Strength { get => m_strength + m_strengthBonus.Sum(bonus => bonus.Bonus); }
 
     [SerializeField] float m_movementSpeed = 5;
 
@@ -129,7 +145,7 @@ public abstract class Piece : MonoBehaviour
     {
         Position targetPosition = m_attackedPiece.CurrentPosition;
         // if the opponent gets destroyed, move to his position, if not, finish turn here
-        if (m_attackedPiece.TakeDamage(m_strength))
+        if (m_attackedPiece.TakeDamage(Strength))
         {
             OnKill.Invoke(m_attackedPiece);
             GoTo(targetPosition);

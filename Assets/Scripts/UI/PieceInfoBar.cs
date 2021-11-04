@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,8 +23,6 @@ public class PieceInfoBar : MonoBehaviour
         }
     }
 
-    [SerializeField] RawImage strengthIcon;
-
     [SerializeField] Image strengthPanel;
 
     // Start is called before the first frame update
@@ -33,11 +32,19 @@ public class PieceInfoBar : MonoBehaviour
         Slider.maxValue = piece.MaxHitPoints;
         Slider.value = piece.HealthPoints;
         piece.OnChangeHP.AddListener(UpdateValue);
+        piece.OnChangeStrengthBonus.AddListener(UpdateStrengthValue);
 
-        for (int i = 1; i < piece.Strength; i++)
+        UpdateStrengthValue(piece.Strength);
+    }
+
+    void UpdateStrengthValue(int value)
+    {
+        RawImage[] strengthIcons = strengthPanel.gameObject.GetComponentsInChildren<RawImage>(true);
+
+        int i = 0;
+        foreach (RawImage strengthIcon in strengthIcons)
         {
-            RawImage imageClone = Instantiate(strengthIcon, strengthPanel.transform);
-            imageClone.rectTransform.localPosition = new Vector3(i * strengthIcon.rectTransform.rect.width, 0, 0);
+            strengthIcon.gameObject.SetActive(i++ < value);
         }
     }
 
