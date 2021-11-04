@@ -1,33 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class StrengthBonus : Countdown
+public class DistanceBonus : Countdown
 {
     int m_bonus = 2;
 
     public int Bonus { get => m_bonus; }
 
-    private Piece m_piece;
+    Piece m_piece;
 
-    public static StrengthBonus Create(Piece pieceToAssignTo)
+    public static DistanceBonus Create(Piece pieceToAssignTo)
     {
-        return new StrengthBonus(pieceToAssignTo);
+        return new DistanceBonus(pieceToAssignTo);
     }
 
-    private StrengthBonus(Piece pieceToAssignTo)
+    private DistanceBonus(Piece pieceToAssignTo)
     {
         m_piece = pieceToAssignTo;
 
-        m_piece.AddStrengthBonus(this);
+        m_piece.DistanceBonus.Add(this);
 
         m_piece.OnFinishedMove.AddListener(DoCountdown);
 
         this.OnZeroCountdown.AddListener(() =>
         {
             m_piece.OnFinishedMove.RemoveListener(DoCountdown);
-            m_piece.RemoveStrengthBonus(this);
+            m_piece.DistanceBonus.Remove(this);
         });
     }
 }

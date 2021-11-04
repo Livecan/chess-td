@@ -33,12 +33,11 @@ public abstract class Piece : MonoBehaviour
 
     public UnityEvent OnFinishedMove { get; private set; } = new UnityEvent();
     public UnityEvent<Piece> OnKill { get; private set; } = new UnityEvent<Piece>();
+
+    #region Health
     public UnityEvent<int> OnChangeHP { get; } = new UnityEvent<int>();
-
     [SerializeField] int maxHitPoints = 0;
-
     public int MaxHitPoints { get => maxHitPoints; }
-
     int m_healthPoints = 1;
     public int HealthPoints {
         get => m_healthPoints;
@@ -52,9 +51,10 @@ public abstract class Piece : MonoBehaviour
             OnChangeHP.Invoke(m_healthPoints);
         }
     }
+    #endregion Health
 
+    #region Strength
     public UnityEvent<int> OnChangeStrengthBonus { get; } = new UnityEvent<int>();
-
     private List<StrengthBonus> m_strengthBonus = new List<StrengthBonus>();
     public void AddStrengthBonus(StrengthBonus bonus)
     {
@@ -66,9 +66,11 @@ public abstract class Piece : MonoBehaviour
         m_strengthBonus.Remove(bonus);
         OnChangeStrengthBonus.Invoke(Strength);
     }
-
     [SerializeField] int m_strength = 1;
     public int Strength { get => m_strength + m_strengthBonus.Sum(bonus => bonus.Bonus); }
+    #endregion Strength
+
+    public List<DistanceBonus> DistanceBonus { get; } = new List<DistanceBonus>();
 
     [SerializeField] float m_movementSpeed = 5;
 
