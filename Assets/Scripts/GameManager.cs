@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
 
     private int m_turnIndex = 1;
 
+    public bool HasExtraTurn { get; set; }
+
     public int FieldColumns { get; private set; } = 9;
     public int FieldRows { get; private set; } = 5;
 
@@ -131,10 +133,12 @@ public class GameManager : MonoBehaviour
     {
         List<Piece> m_playerActivePieces = FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Player")).ToList();
         List<Piece> m_opponentActivePieces = FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Opponent")).ToList();
-        if (nextPlayer)
+        if (nextPlayer && !HasExtraTurn)
         {
             m_turnIndex = (m_turnIndex + 1) % 2;
         }
+
+        HasExtraTurn = false;
 
         Debug.Log("Player turn: " + m_turnIndex);
 
