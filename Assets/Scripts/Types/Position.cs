@@ -68,7 +68,7 @@ public class Position : System.IEquatable<Position>
             column += amount;
         }
 
-        return new Position(row, column);
+        return Position.getPosition(row, column);
     }
 
     public bool Equals(Position other)
@@ -76,6 +76,6 @@ public class Position : System.IEquatable<Position>
         return this.Row == other.Row && this.Column == other.Column;
     }
 
-    public static Position operator -(Position b, Position a) => new Position(b.Column - a.Column, b.Row - a.Row);
-    public static Position operator +(Position a, Position delta) => new Position(a.Column + delta.Column, a.Row + delta.Row);
+    public static Position operator -(Position b, Position a) => Position.getPosition(b.Column - a.Column, b.Row - a.Row);
+    public static Position operator +(Position a, Position delta) => Position.getPosition(a.Column + delta.Column, a.Row + delta.Row);
 }
