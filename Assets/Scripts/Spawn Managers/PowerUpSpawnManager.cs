@@ -16,7 +16,7 @@ public class PowerUpSpawnManager : MonoBehaviour, ISpawnManager
 
     public void Spawn()
     {
-        List<Position> occupiedPositions = FindObjectsOfType<Piece>().Select(piece => piece.CurrentPosition).ToList();
+        List<Position> occupiedPositions = FindObjectsOfType<Piece>().Select(piece => piece.Position).ToList();
         occupiedPositions.AddRange(
             FindObjectsOfType<PowerUp>().Select(powerUp => powerUp.Position)
         );

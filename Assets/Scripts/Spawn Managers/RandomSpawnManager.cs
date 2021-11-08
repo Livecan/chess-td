@@ -19,7 +19,7 @@ public class RandomSpawnManager : MonoBehaviour, ISpawnManager
         Piece[] allPieces = FindObjectsOfType<Piece>();
 
         // Out of spawn positions it needs to extract positions that are not occupied
-        IList<Position> availablePositions = m_spawnPositions.Where(availablePosition => !allPieces.Any(piece => piece.CurrentPosition.Equals(availablePosition))).ToList();
+        IList<Position> availablePositions = m_spawnPositions.Where(availablePosition => !allPieces.Any(piece => piece.Position.Equals(availablePosition))).ToList();
 
         //Each prefab is being spawned at random rate - m_spawnChances - and at random position if there is space for spawning
         for (int i = 0; i < m_piecesPrefabs.Count && availablePositions.Count > 0; i++)

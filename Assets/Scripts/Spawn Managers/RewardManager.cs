@@ -52,7 +52,7 @@ public class RewardManager : MonoBehaviour, ISpawnManager
 
         // TODO: copied from SpawnManager - move into interface static method
         // Out of spawn positions it needs to extract positions that are not occupied
-        IList<Position> availablePositions = m_spawnPositions.Where(availablePosition => !allPieces.Any(piece => piece.CurrentPosition.Equals(availablePosition))).ToList();
+        IList<Position> availablePositions = m_spawnPositions.Where(availablePosition => !allPieces.Any(piece => piece.Position.Equals(availablePosition))).ToList();
 
         // TODO include any free space in condition
         while (spawnQueue.Count > 0 && availablePositions.Count > 0)

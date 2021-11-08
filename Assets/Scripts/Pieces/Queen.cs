@@ -14,14 +14,14 @@ public class Queen : Piece
 
         int actualMoveLength = moveLength + DistanceBonus.Sum(distanceBonus => distanceBonus.Bonus);
 
-        availablePositions.AddRange(GetAvailablePositions(GameManager.Manager, this, allPieces, new Position(1, 0), actualMoveLength));
-        availablePositions.AddRange(GetAvailablePositions(GameManager.Manager, this, allPieces, new Position(1, 1), actualMoveLength));
-        availablePositions.AddRange(GetAvailablePositions(GameManager.Manager, this, allPieces, new Position(0, 1), actualMoveLength));
-        availablePositions.AddRange(GetAvailablePositions(GameManager.Manager, this, allPieces, new Position(-1, 1), actualMoveLength));
-        availablePositions.AddRange(GetAvailablePositions(GameManager.Manager, this, allPieces, new Position(-1, 0), actualMoveLength));
-        availablePositions.AddRange(GetAvailablePositions(GameManager.Manager, this, allPieces, new Position(-1, -1), actualMoveLength));
-        availablePositions.AddRange(GetAvailablePositions(GameManager.Manager, this, allPieces, new Position(0, -1), actualMoveLength));
-        availablePositions.AddRange(GetAvailablePositions(GameManager.Manager, this, allPieces, new Position(1, -1), actualMoveLength));
+        availablePositions.AddRange(GetAvailablePositions(GameManager.Manager, this, allPieces, Position.getPosition(1, 0), actualMoveLength));
+        availablePositions.AddRange(GetAvailablePositions(GameManager.Manager, this, allPieces, Position.getPosition(1, 1), actualMoveLength));
+        availablePositions.AddRange(GetAvailablePositions(GameManager.Manager, this, allPieces, Position.getPosition(0, 1), actualMoveLength));
+        availablePositions.AddRange(GetAvailablePositions(GameManager.Manager, this, allPieces, Position.getPosition(-1, 1), actualMoveLength));
+        availablePositions.AddRange(GetAvailablePositions(GameManager.Manager, this, allPieces, Position.getPosition(-1, 0), actualMoveLength));
+        availablePositions.AddRange(GetAvailablePositions(GameManager.Manager, this, allPieces, Position.getPosition(-1, -1), actualMoveLength));
+        availablePositions.AddRange(GetAvailablePositions(GameManager.Manager, this, allPieces, Position.getPosition(0, -1), actualMoveLength));
+        availablePositions.AddRange(GetAvailablePositions(GameManager.Manager, this, allPieces, Position.getPosition(1, -1), actualMoveLength));
 
         return availablePositions;
     }

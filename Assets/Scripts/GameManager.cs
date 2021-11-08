@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private GameObject tilePrefab;
+
     [SerializeField] private List<Piece> m_playerPiecesPrefabs;
     [SerializeField] private List<Piece> m_opponentPiecesPrefabs;
 
@@ -36,17 +38,26 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        for (int column = 0; column < FieldColumns; column++)
+        {
+            for (int row = 0; row < FieldRows; row++)
+            {
+                GameObject tile = Instantiate(tilePrefab);
+                tile.GetComponent<PositionedObject>().Position = Position.getPosition(column, row);
+            }
+        }
+
         InitializeController(playerController.GetComponent<UserController>(), IController.Direction.Right);
         InitializeController(opponentController.GetComponent<AIController>(), IController.Direction.Left);
 
         // Initialize SpawnManager with spawning positions - the first column on opponent's side
         opponentController.GetComponent<ISpawnManager>().Initialize(
             new Position[] {
-                new Position(FieldColumns - 1, 0),
-                new Position(FieldColumns - 1, 1),
-                new Position(FieldColumns - 1, 2),
-                new Position(FieldColumns - 1, 3),
-                new Position(FieldColumns - 1, 4),
+                Position.getPosition(FieldColumns - 1, 0),
+                Position.getPosition(FieldColumns - 1, 1),
+                Position.getPosition(FieldColumns - 1, 2),
+                Position.getPosition(FieldColumns - 1, 3),
+                Position.getPosition(FieldColumns - 1, 4),
             }
         );
 
@@ -55,32 +66,32 @@ public class GameManager : MonoBehaviour
         // Initialize PlayerRewardManager similarly to Opponent SpawnManager - the first column on player's side
         playerRewardManager.Initialize(
             new Position[] {
-                new Position(0, 0),
-                new Position(0, 1),
-                new Position(0, 2),
-                new Position(0, 3),
-                new Position(0, 4),
+                Position.getPosition(0, 0),
+                Position.getPosition(0, 1),
+                Position.getPosition(0, 2),
+                Position.getPosition(0, 3),
+                Position.getPosition(0, 4),
             }
         );
 
         m_powerUpSpawnManager = FindObjectOfType<PowerUpSpawnManager>();
         m_powerUpSpawnManager.Initialize(
             new Position[] {
-                new Position(3, 0),
-                new Position(3, 1),
-                new Position(3, 2),
-                new Position(3, 3),
-                new Position(3, 4),
-                new Position(4, 0),
-                new Position(4, 1),
-                new Position(4, 2),
-                new Position(4, 3),
-                new Position(4, 4),
-                new Position(5, 0),
-                new Position(5, 1),
-                new Position(5, 2),
-                new Position(5, 3),
-                new Position(5, 4),
+                Position.getPosition(3, 0),
+                Position.getPosition(3, 1),
+                Position.getPosition(3, 2),
+                Position.getPosition(3, 3),
+                Position.getPosition(3, 4),
+                Position.getPosition(4, 0),
+                Position.getPosition(4, 1),
+                Position.getPosition(4, 2),
+                Position.getPosition(4, 3),
+                Position.getPosition(4, 4),
+                Position.getPosition(5, 0),
+                Position.getPosition(5, 1),
+                Position.getPosition(5, 2),
+                Position.getPosition(5, 3),
+                Position.getPosition(5, 4),
             }
         );
 
@@ -93,8 +104,8 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            m_playerPiecesPrefabs[i].GetCopy(new Position(0, i + 1));
-            m_opponentPiecesPrefabs[i].GetCopy(new Position(8, i + 1));
+            m_playerPiecesPrefabs[i].GetCopy(Position.getPosition(0, i + 1));
+            m_opponentPiecesPrefabs[i].GetCopy(Position.getPosition(8, i + 1));
         }
 
         NextTurn();
@@ -111,7 +122,7 @@ public class GameManager : MonoBehaviour
     // Performs the given turn if it is valid
     void NextTurn(Turn turn)
     {
-        if (!turn.Piece.GetAvailablePositions().Contains(turn.Position) && !turn.Piece.GetAvailablePositions().Contains(turn.AttackedPiece?.CurrentPosition))
+        if (!turn.Piece.GetAvailablePositions().Contains(turn.Position) && !turn.Piece.GetAvailablePositions().Contains(turn.AttackedPiece?.Position))
         {
             NextTurn(false);
         }

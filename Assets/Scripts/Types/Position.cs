@@ -15,13 +15,28 @@ public class Position : System.IEquatable<Position>
         return new Vector3(Column - columnVectorAdjustment, y, Row - rowVectorAdjustment);
     }
 
-    public Position(Vector3 planeCoordinates)
+    public static Position getPosition(Vector3 planeCoordinates)
     {
-        this.Column = Mathf.RoundToInt(planeCoordinates.x + columnVectorAdjustment);
-        this.Row = Mathf.RoundToInt(planeCoordinates.z + rowVectorAdjustment);
+        return getPosition(Mathf.RoundToInt(planeCoordinates.x + columnVectorAdjustment), Mathf.RoundToInt(planeCoordinates.z + rowVectorAdjustment));
     }
 
-    public Position(int column, int row)
+    private static IDictionary<int, IDictionary<int, Position>> positionsDictionary = new SortedDictionary<int, IDictionary<int, Position>>();
+
+    public static Position getPosition(int column, int row)
+    {
+        if (!positionsDictionary.ContainsKey(column)) {
+            positionsDictionary[column] = new SortedDictionary<int, Position>();
+        }
+
+        if (!positionsDictionary[column].ContainsKey(row))
+        {
+            positionsDictionary[column][row] = new Position(column, row);
+        }
+
+        return positionsDictionary[column][row];
+    }
+
+    private Position(int column, int row)
     {
         this.Column = column;
         this.Row = row;

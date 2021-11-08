@@ -60,7 +60,7 @@ public class AIController : MonoBehaviour, IController
                 score -= GetPieceScore(myPiece, AttackDirection);
                 score += GetPieceScore(myPiece, AttackDirection, availablePosition);
 
-                Piece attackedOpponent = opponentPieces.Find(piece => piece.CurrentPosition.Equals(availablePosition));
+                Piece attackedOpponent = opponentPieces.Find(piece => piece.Position.Equals(availablePosition));
 
                 // If the move includes taking opponent's piece, first I need to add the previous state of the opponent's piece to the score and then subtract the next state against me                
                 if (attackedOpponent != null)
@@ -102,7 +102,7 @@ public class AIController : MonoBehaviour, IController
 
         if (position == null)
         {
-            position = piece.CurrentPosition;
+            position = piece.Position;
         }
         if (health == int.MinValue)
         {

@@ -58,7 +58,8 @@ public class UserController : MonoBehaviour, IController
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, LayerMask.GetMask("Plane")))
             {
-                Position selectedPosition = new Position(hit.point);
+                Position selectedPosition = hit.collider.GetComponent<PositionedObject>().Position;
+
                 // TODO: check if valid position according to the rules - maybe render position objects for the player and only those would collide with Raycast?
                 Piece selectedPiece;
                 if (GetPositionHasPiece(selectedPosition, out selectedPiece))
@@ -89,7 +90,7 @@ public class UserController : MonoBehaviour, IController
             m_selectedPiece = selectedPiece;
         }
         // the player must have chosen his piece to play and the selectedPiece is the opponent, the opponent's position must be allowed
-        else if (m_selectedPiece != null && m_selectedPiece.GetAvailablePositions().Contains(selectedPiece.CurrentPosition))
+        else if (m_selectedPiece != null && m_selectedPiece.GetAvailablePositions().Contains(selectedPiece.Position))
         {
             SubmitTurn(new Turn(m_selectedPiece, selectedPiece));
         }
@@ -97,7 +98,7 @@ public class UserController : MonoBehaviour, IController
 
     private bool GetPositionHasPiece(Position position, out Piece piece)
     {
-        piece = FindObjectsOfType<Piece>().FirstOrDefault(piece => piece.CurrentPosition.Column == position.Column && piece.CurrentPosition.Row == position.Row);
+        piece = FindObjectsOfType<Piece>().FirstOrDefault(piece => piece.Position.Column == position.Column && piece.Position.Row == position.Row);
         return piece != null;
     }
 

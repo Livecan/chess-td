@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class Piece : MonoBehaviour
+public abstract class Piece : PositionedObject
 {
     private Position startPosition;
     public Position StartPosition
@@ -15,7 +15,7 @@ public abstract class Piece : MonoBehaviour
             if (startPosition == null)
             {
                 startPosition = value;
-                m_currentPosition = value;
+                m_position = value;
                 transform.position = value.ToVector3(transform.position.y);
             }
             else
@@ -25,9 +25,7 @@ public abstract class Piece : MonoBehaviour
         }
     }
 
-    private Position m_currentPosition;
     private Position m_targetPosition;
-    public Position CurrentPosition { get => m_currentPosition; }
 
     private Piece m_attackedPiece;
 
@@ -94,7 +92,7 @@ public abstract class Piece : MonoBehaviour
         // The piece moves as long as it has a target to move to
         if (m_targetPosition != null)
         {
-            Vector3 direction = (m_targetPosition.ToVector3() - m_currentPosition.ToVector3()).normalized;
+            Vector3 direction = (m_targetPosition.ToVector3() - m_position.ToVector3()).normalized;
             float moveDistance = m_movementSpeed * Time.deltaTime;
             transform.position += new Vector3(direction.x, direction.y, direction.z) * moveDistance;
 
@@ -105,7 +103,7 @@ public abstract class Piece : MonoBehaviour
             {
                 transform.position = targetPosition;
 
-                m_currentPosition = m_targetPosition;
+                m_position = m_targetPosition;
                 m_targetPosition = null;
 
                 // if planned attack, do it before the end of the turn
@@ -128,7 +126,7 @@ public abstract class Piece : MonoBehaviour
     }
     public void GoTo(Piece opponent)
     {
-        m_targetPosition = GetPositionBeforeAttack(m_currentPosition, opponent.CurrentPosition);
+        m_targetPosition = GetPositionBeforeAttack(m_position, opponent.Position);
         m_attackedPiece = opponent;
     }
 
@@ -145,7 +143,7 @@ public abstract class Piece : MonoBehaviour
 
     void Attack()
     {
-        Position targetPosition = m_attackedPiece.CurrentPosition;
+        Position targetPosition = m_attackedPiece.Position;
         // if the opponent gets destroyed, move to his position, if not, finish turn here
         if (m_attackedPiece.TakeDamage(Strength))
         {
@@ -175,21 +173,21 @@ public abstract class Piece : MonoBehaviour
     {
         List<Position> availablePositions = new List<Position>();
 
-        Position candidatePosition = currentPiece.CurrentPosition;
+        Position candidatePosition = currentPiece.Position;
 
         for (int i = 1; i <= amount; i++)
         {
             candidatePosition += deltaPosition;
 
             if (!candidatePosition.IsInArea(0, gameManager.FieldRows - 1, gameManager.FieldColumns - 1, 0)
-                || allPieces.Exists(piece => piece.CurrentPosition.Equals(candidatePosition) && piece.tag == currentPiece.tag))
+                || allPieces.Exists(piece => piece.Position.Equals(candidatePosition) && piece.tag == currentPiece.tag))
             {
                 break;
             }
 
             availablePositions.Add(candidatePosition);
 
-            if (allPieces.Find(piece => piece.CurrentPosition.Equals(candidatePosition)))
+            if (allPieces.Find(piece => piece.Position.Equals(candidatePosition)))
             {
                 break;
             }
