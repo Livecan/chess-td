@@ -56,7 +56,7 @@ public class UserController : MonoBehaviour, IController
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, LayerMask.GetMask("Plane")))
+            if (Physics.Raycast(ray, out hit, 50, LayerMask.GetMask("Plane")))
             {
                 Position selectedPosition = hit.collider.GetComponent<PositionedObject>().Position;
 
