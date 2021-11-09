@@ -244,7 +244,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8184584746807530066, guid: 9d89851747abfdd4b9a7d2f318cfacb3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.4
+      value: -1.2
       objectReference: {fileID: 0}
     - target: {fileID: 8184584746807530066, guid: 9d89851747abfdd4b9a7d2f318cfacb3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -285,6 +285,18 @@ PrefabInstance:
     - target: {fileID: 8184584746807530078, guid: 9d89851747abfdd4b9a7d2f318cfacb3, type: 3}
       propertyPath: m_Name
       value: Info Bar Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8184584747667724050, guid: 9d89851747abfdd4b9a7d2f318cfacb3, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8184584747667724050, guid: 9d89851747abfdd4b9a7d2f318cfacb3, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8184584747667724050, guid: 9d89851747abfdd4b9a7d2f318cfacb3, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8184584747781145637, guid: 9d89851747abfdd4b9a7d2f318cfacb3, type: 3}
       propertyPath: m_AnchorMax.x
