@@ -6,6 +6,7 @@ public class ExtraTurnPowerUp : PowerUp
 {
     protected override void OnTriggerEnter(Collider other)
     {
+        base.OnTriggerEnter(other);
 #nullable enable
         Piece? otherPiece = other.gameObject.GetComponent<Piece>();
         if (otherPiece != null)

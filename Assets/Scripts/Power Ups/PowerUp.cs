@@ -6,5 +6,7 @@ using UnityEngine;
 public abstract class PowerUp : PositionedObject
 {
     // Custom functionality for then the PowerUp collides with another object - supposedly a Piece
-    protected abstract void OnTriggerEnter(Collider other);
+    protected virtual void OnTriggerEnter(Collider other) {
+        other.gameObject.GetComponent<Piece>()?.OnPowerUpCollected?.Invoke();
+    }
 }

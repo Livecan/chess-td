@@ -5,22 +5,27 @@ using UnityEngine;
 public class ParticleFX : MonoBehaviour
 {
     [SerializeField] ParticleSystem destroyFxPrefab;
-
     [SerializeField] ParticleSystem attackedFxPrefab;
+    [SerializeField] ParticleSystem powerUpCollectedFxPrefab;
 
     private void OnAttacked(bool destroyed)
     {
-        Debug.Log("AttackedParticle");
         ParticleSystem attackedFx = Instantiate(destroyed ? destroyFxPrefab : attackedFxPrefab, transform.position, transform.rotation);
-        /*var main = attackedFx.main;
-        main.simulationSpeed = 0.1f;*/
         attackedFx.Play();
+    }
+
+    private void OnPowerUpCollected()
+    {
+        ParticleSystem powerUpCollectedFx = Instantiate(powerUpCollectedFxPrefab, transform.position, transform.rotation);
+        powerUpCollectedFx.Play();
     }
 
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("Init FX");
-        gameObject.GetComponentInParent<Piece>().OnAttacked.AddListener(OnAttacked);
+        Piece myPiece = gameObject.GetComponentInParent<Piece>();
+        myPiece.OnAttacked.AddListener(OnAttacked);
+        myPiece.OnPowerUpCollected.AddListener(OnPowerUpCollected);
     }
 }

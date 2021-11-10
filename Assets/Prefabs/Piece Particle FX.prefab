@@ -45,3 +45,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroyFxPrefab: {fileID: 2312591318274358132, guid: 77da29788f3010e4396994ea52057980, type: 3}
   attackedFxPrefab: {fileID: 524362925323473336, guid: f23ca344d22b7d84b848fb882e92bf51, type: 3}
+  powerUpCollectedFxPrefab: {fileID: 3302442364004722509, guid: 10434d6bf3af98b46a88ab696f543ee3, type: 3}
