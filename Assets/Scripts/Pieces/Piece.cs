@@ -31,6 +31,7 @@ public abstract class Piece : PositionedObject
 
     public UnityEvent OnFinishedMove { get; private set; } = new UnityEvent();
     public UnityEvent<Piece> OnKill { get; private set; } = new UnityEvent<Piece>();
+    public UnityEvent<bool> OnAttacked { get; } = new UnityEvent<bool>();
 
     #region Health
     public UnityEvent<int> OnChangeHP { get; } = new UnityEvent<int>();
@@ -50,7 +51,6 @@ public abstract class Piece : PositionedObject
         }
     }
     #endregion Health
-
     #region Strength
     public UnityEvent<int> OnChangeStrengthBonus { get; } = new UnityEvent<int>();
     private List<StrengthBonus> m_strengthBonus = new List<StrengthBonus>();
@@ -67,7 +67,7 @@ public abstract class Piece : PositionedObject
     [SerializeField] int m_strength = 1;
     public int Strength { get => m_strength + m_strengthBonus.Sum(bonus => bonus.Bonus); }
     #endregion Strength
-
+    #region Distance
     public UnityEvent<DistanceBonus> OnDistanceBonus { get; private set; } = new UnityEvent<DistanceBonus>();
 #nullable enable
     private DistanceBonus? distanceBonus;
@@ -88,6 +88,7 @@ public abstract class Piece : PositionedObject
     {
         return distanceBonus?.Bonus ?? 0;
     }
+    #endregion Distance
 
     [SerializeField] float m_movementSpeed = 5;
 
@@ -181,9 +182,11 @@ public abstract class Piece : PositionedObject
         // if no HP left, destroy
         if (HealthPoints <= 0)
         {
+            OnAttacked.Invoke(true);
             Destroy(this.gameObject);
             return true;
         }
+        OnAttacked.Invoke(false);
         return false;
     }
 
