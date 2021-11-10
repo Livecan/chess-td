@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8205834978172861187}
   - component: {fileID: 1938649998004659075}
   - component: {fileID: 1406528445}
+  - component: {fileID: 4689593159020646956}
   m_Layer: 0
   m_Name: Player Queen
   m_TagString: Player
@@ -114,6 +115,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2.526481, z: 1}
   m_Center: {x: 0, y: 0.26324102, z: 0}
+--- !u!114 &4689593159020646956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 816613769806286854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2b78e328bf6fb240872af5a1cf35258, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aura: {fileID: 1028404566434962}
 --- !u!1001 &1556634058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -253,6 +267,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1d676d9f7cf04b4fb2414303514ede2, type: 3}
+--- !u!1 &1028404566434962 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1028405852751244, guid: b1d676d9f7cf04b4fb2414303514ede2, type: 3}
+  m_PrefabInstance: {fileID: 2102911262}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4412819513206102 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4412820776879176, guid: b1d676d9f7cf04b4fb2414303514ede2, type: 3}

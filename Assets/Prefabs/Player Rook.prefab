@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2784409656832818980}
   - component: {fileID: 7676440549225715959}
   - component: {fileID: 6517917752550254139}
+  - component: {fileID: 2425672171684432019}
   m_Layer: 0
   m_Name: Player Rook
   m_TagString: Player
@@ -114,6 +115,19 @@ MonoBehaviour:
   maxHitPoints: 2
   m_strength: 2
   m_movementSpeed: 5
+--- !u!114 &2425672171684432019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4223704749112290874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2b78e328bf6fb240872af5a1cf35258, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aura: {fileID: 1028404940648084}
 --- !u!1001 &89040089
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -257,6 +271,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1d676d9f7cf04b4fb2414303514ede2, type: 3}
+--- !u!1 &1028404940648084 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1028405852751244, guid: b1d676d9f7cf04b4fb2414303514ede2, type: 3}
+  m_PrefabInstance: {fileID: 1252387608}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4412819797241680 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4412820776879176, guid: b1d676d9f7cf04b4fb2414303514ede2, type: 3}

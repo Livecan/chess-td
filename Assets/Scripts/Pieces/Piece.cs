@@ -68,6 +68,7 @@ public abstract class Piece : PositionedObject
     public int Strength { get => m_strength + m_strengthBonus.Sum(bonus => bonus.Bonus); }
     #endregion Strength
 
+    public UnityEvent<DistanceBonus> OnDistanceBonus { get; private set; } = new UnityEvent<DistanceBonus>();
 #nullable enable
     private DistanceBonus? distanceBonus;
 #nullable restore
@@ -79,6 +80,7 @@ public abstract class Piece : PositionedObject
                 distanceBonus?.Destroy();
             }
             distanceBonus = value;
+            OnDistanceBonus.Invoke(distanceBonus);
         }
     }
 
