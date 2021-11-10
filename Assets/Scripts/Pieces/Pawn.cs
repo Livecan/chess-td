@@ -37,7 +37,7 @@ public class Pawn : Piece
         }
 
         // If the pawn caught Distance Power Up, it can move forward more fields
-        int actualMoveLength = 1 + DistanceBonus.Sum(distanceBonus => distanceBonus.Bonus);
+        int actualMoveLength = 1 + GetDistanceBonus();
         availablePositions.AddRange(
             Piece.GetAvailablePositions(GameManager.Manager, this, allPieces, DeltaForwardPosition, actualMoveLength)
                 // The pawn can't attack moving forward

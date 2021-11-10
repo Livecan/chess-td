@@ -12,7 +12,7 @@ public class Queen : Piece
         List<Piece> allPieces = new List<Piece>(FindObjectsOfType<Piece>());
         List<Position> availablePositions = new List<Position>();
 
-        int actualMoveLength = moveLength + DistanceBonus.Sum(distanceBonus => distanceBonus.Bonus);
+        int actualMoveLength = moveLength + GetDistanceBonus();
 
         availablePositions.AddRange(GetAvailablePositions(GameManager.Manager, this, allPieces, Position.getPosition(1, 0), actualMoveLength));
         availablePositions.AddRange(GetAvailablePositions(GameManager.Manager, this, allPieces, Position.getPosition(1, 1), actualMoveLength));

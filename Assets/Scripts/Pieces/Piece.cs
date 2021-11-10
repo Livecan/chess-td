@@ -68,7 +68,24 @@ public abstract class Piece : PositionedObject
     public int Strength { get => m_strength + m_strengthBonus.Sum(bonus => bonus.Bonus); }
     #endregion Strength
 
-    public List<DistanceBonus> DistanceBonus { get; } = new List<DistanceBonus>();
+#nullable enable
+    private DistanceBonus? distanceBonus;
+#nullable restore
+    public DistanceBonus DistanceBonus {
+        set
+        {
+            if (value != null)
+            {
+                distanceBonus?.Destroy();
+            }
+            distanceBonus = value;
+        }
+    }
+
+    public int GetDistanceBonus()
+    {
+        return distanceBonus?.Bonus ?? 0;
+    }
 
     [SerializeField] float m_movementSpeed = 5;
 

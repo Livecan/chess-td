@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DistanceBonus : Countdown
 {
-    int m_bonus = 2;
+    int m_bonus;
 
     public int Bonus { get => m_bonus; }
 
@@ -15,18 +15,22 @@ public class DistanceBonus : Countdown
         return new DistanceBonus(pieceToAssignTo);
     }
 
-    private DistanceBonus(Piece pieceToAssignTo)
+    private DistanceBonus(Piece pieceToAssignTo, int bonus = 2)
     {
+        m_bonus = bonus;
+
         m_piece = pieceToAssignTo;
 
-        m_piece.DistanceBonus.Add(this);
+        m_piece.DistanceBonus = this;
 
         m_piece.OnFinishedMove.AddListener(DoCountdown);
 
-        this.OnZeroCountdown.AddListener(() =>
-        {
-            m_piece.OnFinishedMove.RemoveListener(DoCountdown);
-            m_piece.DistanceBonus.Remove(this);
-        });
+        this.OnZeroCountdown.AddListener(this.Destroy);
+    }
+
+    public void Destroy()
+    {
+        m_piece.OnFinishedMove.RemoveListener(DoCountdown);
+        m_piece.DistanceBonus = null;
     }
 }
