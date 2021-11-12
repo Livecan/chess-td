@@ -9,6 +9,8 @@ public class UserController : MonoBehaviour, IController
     private GameManager gameManager;
     private Piece m_selectedPiece;
 
+    [SerializeField] GameObject selectorAura;
+
     private System.Action<Turn> m_turnCallback;
     public System.Action<Turn> TurnCallback
     {
@@ -88,6 +90,8 @@ public class UserController : MonoBehaviour, IController
         if (myPieces.Contains(selectedPiece))
         {
             m_selectedPiece = selectedPiece;
+            selectorAura.transform.position = new Vector3(m_selectedPiece.transform.position.x, selectorAura.transform.position.y, m_selectedPiece.transform.position.z);
+            selectorAura.SetActive(true);
         }
         // the player must have chosen his piece to play and the selectedPiece is the opponent, the opponent's position must be allowed
         else if (m_selectedPiece != null && m_selectedPiece.GetAvailablePositions().Contains(selectedPiece.Position))
@@ -111,6 +115,7 @@ public class UserController : MonoBehaviour, IController
 
     private void SubmitTurn(Turn turn)
     {
+        selectorAura.SetActive(false);
         isMyTurn = false;
         m_selectedPiece = null;
         m_turnCallback(turn);
