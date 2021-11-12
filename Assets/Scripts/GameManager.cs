@@ -111,6 +111,8 @@ public class GameManager : MonoBehaviour
             m_opponentPiecesPrefabs[i].GetCopy(Position.getPosition(8, i + 1));
         }
 
+        OnStartGame.Invoke();
+
         NextTurn();
     }
 
