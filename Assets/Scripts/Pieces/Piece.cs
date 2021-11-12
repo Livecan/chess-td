@@ -30,6 +30,7 @@ public abstract class Piece : PositionedObject
     private Piece m_attackedPiece;
 
     public UnityEvent OnFinishedMove { get; private set; } = new UnityEvent();
+    public UnityEvent OnStartMove { get; } = new UnityEvent();
     public UnityEvent<Piece> OnKill { get; private set; } = new UnityEvent<Piece>();
     public UnityEvent<bool> OnAttacked { get; } = new UnityEvent<bool>();
     public UnityEvent OnPowerUpCollected { get; } = new UnityEvent();
@@ -142,11 +143,13 @@ public abstract class Piece : PositionedObject
     }
     public void GoTo(Position position)
     {
+        OnStartMove.Invoke();
         m_targetPosition = position;
         m_attackedPiece = null;
     }
     public void GoTo(Piece opponent)
     {
+        OnStartMove.Invoke();
         m_targetPosition = GetPositionBeforeAttack(m_position, opponent.Position);
         m_attackedPiece = opponent;
     }

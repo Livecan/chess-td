@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class GameManager : MonoBehaviour
 
     public int FieldColumns { get; private set; } = 9;
     public int FieldRows { get; private set; } = 5;
+
+    public UnityEvent OnStartGame { get; } = new UnityEvent();
 
     private static GameManager gameManager;
 

@@ -6,30 +6,45 @@ public class PieceSfx : MonoBehaviour
 {
     [SerializeField] AudioClip destroyClip;
     [SerializeField] AudioClip hitClip;
-    static AudioSource globalAudioSource;
+    [SerializeField] AudioClip walkingClip;
+    AudioSource audioSource;
 
     Piece piece;
 
     private void Start()
     {
-        if (globalAudioSource == null)
+        if (audioSource == null)
         {
-            globalAudioSource = GameObject.Find("Audio Player").GetComponent<AudioSource>();
+            audioSource = GetComponent<AudioSource>(); //GameObject.Find("Audio Player").GetComponent<AudioSource>();
         }
 
         piece = GetComponentInParent<Piece>();
         piece.OnAttacked.AddListener(PlayOnAttacked);
+        piece.OnStartMove.AddListener(PlayOnWalking);
+        piece.OnFinishedMove.AddListener(StopPlayback);
     }
 
     private void PlayOnAttacked(bool destroyed)
     {
         if (destroyed)
         {
-            globalAudioSource.PlayOneShot(destroyClip);
+            GameManager.Manager.GetComponentInChildren<AudioSource>().PlayOneShot(destroyClip);
         }
         else
         {
-            globalAudioSource.PlayOneShot(hitClip);
+            audioSource.PlayOneShot(hitClip);
         }
+    }
+
+    private void PlayOnWalking()
+    {
+        audioSource.clip = walkingClip;
+        audioSource.loop = true;
+        audioSource.Play();
+    }
+
+    private void StopPlayback()
+    {
+        audioSource.Stop();
     }
 }
