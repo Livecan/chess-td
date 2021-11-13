@@ -9,7 +9,7 @@ public class PowerUpSfx : MonoBehaviour
     private void Start()
     {
         PowerUp powerUp = GetComponentInParent<PowerUp>();
-        powerUp.OnDestroyEvent.AddListener(PlayOnCollected);
+        powerUp.OnPowerUpCollected.AddListener(PlayOnCollected);
     }
 
     private void PlayOnCollected()

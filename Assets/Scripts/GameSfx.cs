@@ -8,7 +8,7 @@ public class GameSfx : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Manager.OnStartGame.AddListener(PlayOnStartGame);
+        GameManager.Manager.OnInitializeGame.AddListener(PlayOnStartGame);
     }
 
     private void PlayOnStartGame()

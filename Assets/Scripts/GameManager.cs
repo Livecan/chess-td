@@ -39,7 +39,11 @@ public class GameManager : MonoBehaviour
     public int FieldColumns { get; private set; } = 9;
     public int FieldRows { get; private set; } = 5;
 
-    public UnityEvent OnStartGame { get; } = new UnityEvent();
+    public UnityEvent OnInitializeGame { get; } = new UnityEvent();
+
+    public UnityEvent OnWonGame { get; } = new UnityEvent();
+
+    public UnityEvent OnLostGame { get; } = new UnityEvent();
 
     #region static Manager reference
     private static GameManager gameManager;
@@ -136,7 +140,7 @@ public class GameManager : MonoBehaviour
             m_opponentPiecesPrefabs[i].GetCopy(Position.getPosition(8, i + 1));
         }
 
-        OnStartGame.Invoke();
+        OnInitializeGame.Invoke();
 
         NextTurn();
     }
@@ -195,11 +199,11 @@ public class GameManager : MonoBehaviour
 
     public void LoseGame()
     {
-        Debug.Log("Game Lost!");
+        OnLostGame.Invoke();
     }
 
     internal void WinGame()
     {
-        Debug.Log("Game Won!");
+        OnWonGame.Invoke();
     }
 }

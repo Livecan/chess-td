@@ -3,11 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UserController : MonoBehaviour, IController
 {
     private GameManager gameManager;
     private Piece m_selectedPiece;
+
+    public GameObject levelInstruction;
+    public GameObject gameOverMessage;
+    public GameObject gameWonMessage;
+    public GameObject gameLostMessage;
 
     [SerializeField] GameObject selectorAura;
 
@@ -39,6 +45,8 @@ public class UserController : MonoBehaviour, IController
     private IEnumerable<Piece> myPieces;
     private IEnumerable<Piece> opponentPieces;
 
+    private bool isGameRunning = false;
+
     private bool isMyTurn = false;
 
     private RewardManager rewardManager;
@@ -54,7 +62,7 @@ public class UserController : MonoBehaviour, IController
     // Update is called once per frame
     void Update()
     {
-        if (isMyTurn && Input.GetMouseButtonDown(0))
+        if (isGameRunning && isMyTurn && Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -74,6 +82,41 @@ public class UserController : MonoBehaviour, IController
                 }
             }
         }
+    }
+
+    public void StartGame()
+    {
+        isGameRunning = true;
+        levelInstruction.SetActive(false);
+        gameManager.OnLostGame.AddListener(LoseGame);
+        gameManager.OnWonGame.AddListener(WinGame);
+    }
+
+    public void LoseGame()
+    {
+        FinishGame();
+        gameLostMessage.SetActive(true);
+    }
+
+    public void WinGame()
+    {
+        FinishGame();
+        gameWonMessage.SetActive(true);
+    }
+
+    public void FinishGame()
+    {
+        isGameRunning = false;
+        gameOverMessage.SetActive(true);
+    }
+
+    public void ExitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.ExitPlaymode();
+#else
+        Application.Quit();
+#endif
     }
 
     void SelectPosition(Position selectedPosition)
