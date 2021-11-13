@@ -7,7 +7,7 @@ public class VictoryCondition : MonoBehaviour
 {
     public void CheckVictoryCondition(bool isPlayerTurn)
     {
-        IEnumerable<Piece> opponentPieces = FindObjectsOfType<Piece>().Where(piece => !piece.isPlayer);
+        IEnumerable<Piece> opponentPieces = GameManager.Manager.OpponentPieces;
 
         IEnumerable<Piece> opponentPiecesInPlayerSpawn = opponentPieces.Where(piece => piece.Position.Column == 0);
 
@@ -17,7 +17,7 @@ public class VictoryCondition : MonoBehaviour
             GameManager.Manager.LoseGame();
         }
 
-        IEnumerable<Piece> playerPieces = FindObjectsOfType<Piece>().Where(piece => piece.isPlayer);
+        IEnumerable<Piece> playerPieces = GameManager.Manager.PlayerPieces;
 
         IEnumerable<Piece> playerPawnsInOpponentSpawn = playerPieces.Where(piece => piece.Position.Column == GameManager.Manager.FieldColumns - 1);
 

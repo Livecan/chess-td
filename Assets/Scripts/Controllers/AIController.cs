@@ -39,12 +39,12 @@ public class AIController : MonoBehaviour, IController
         }
     }
 
-    public void GetTurn(List<Piece> myPieces, List<Piece> opponentPieces)
+    public void GetTurn(IEnumerable<Piece> myPieces, IEnumerable<Piece> opponentPieces)
     {
         StartCoroutine(ProcessNextTurn(myPieces, opponentPieces));
     }
 
-    private IEnumerator ProcessNextTurn(List<Piece> myPieces, List<Piece> opponentPieces)
+    private IEnumerator ProcessNextTurn(IEnumerable<Piece> myPieces, IEnumerable<Piece> opponentPieces)
     {
         yield return null;
 
@@ -60,7 +60,7 @@ public class AIController : MonoBehaviour, IController
                 score -= GetPieceScore(myPiece, AttackDirection);
                 score += GetPieceScore(myPiece, AttackDirection, availablePosition);
 
-                Piece attackedOpponent = opponentPieces.Find(piece => piece.Position.Equals(availablePosition));
+                Piece attackedOpponent = opponentPieces.FirstOrDefault(piece => piece.Position.Equals(availablePosition));
 
                 // If the move includes taking opponent's piece, first I need to add the previous state of the opponent's piece to the score and then subtract the next state against me                
                 if (attackedOpponent != null)

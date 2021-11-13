@@ -14,7 +14,21 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject playerController;
     [SerializeField] private GameObject opponentController;
 
-    
+    public IEnumerable<Piece> PlayerPieces
+    {
+        get
+        {
+            return FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Player"));
+        }
+    }
+
+    public IEnumerable<Piece> OpponentPieces
+    {
+        get
+        {
+            return FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Opponent"));
+        }
+    }
 
     private ISpawnManager m_powerUpSpawnManager;
 
@@ -158,8 +172,6 @@ public class GameManager : MonoBehaviour
     // Starts a turn for the next player (or asks the current player for the correct turn)
     void NextTurn(bool nextPlayer = true)
     {
-        List<Piece> m_playerActivePieces = FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Player")).ToList();
-        List<Piece> m_opponentActivePieces = FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Opponent")).ToList();
         if (nextPlayer && !HasExtraTurn)
         {
             m_turnIndex = (m_turnIndex + 1) % 2;
@@ -172,13 +184,13 @@ public class GameManager : MonoBehaviour
         if (m_turnIndex == 0)
         {
             opponentController.GetComponent<ISpawnManager>().Spawn();
-            playerController.GetComponent<UserController>().GetTurn(m_playerActivePieces.ToList(), m_opponentActivePieces.ToList());
+            playerController.GetComponent<UserController>().GetTurn(PlayerPieces.ToList(), OpponentPieces.ToList());
         }
         else
         {
             m_powerUpSpawnManager.Spawn();
             playerController.GetComponent<ISpawnManager>().Spawn();
-            opponentController.GetComponent<AIController>().GetTurn(m_opponentActivePieces.ToList(), m_playerActivePieces.ToList());
+            opponentController.GetComponent<AIController>().GetTurn(OpponentPieces.ToList(), PlayerPieces.ToList());
         }
 
     }

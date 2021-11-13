@@ -36,8 +36,8 @@ public class UserController : MonoBehaviour, IController
         }
     }
 
-    private List<Piece> myPieces;
-    private List<Piece> opponentPieces;
+    private IEnumerable<Piece> myPieces;
+    private IEnumerable<Piece> opponentPieces;
 
     private bool isMyTurn = false;
 
@@ -106,7 +106,7 @@ public class UserController : MonoBehaviour, IController
         return piece != null;
     }
 
-    public void GetTurn(List<Piece> myPieces, List<Piece> opponentPieces)
+    public void GetTurn(IEnumerable<Piece> myPieces, IEnumerable<Piece> opponentPieces)
     {
         this.myPieces = myPieces;
         this.opponentPieces = opponentPieces;

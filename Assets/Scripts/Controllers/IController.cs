@@ -9,5 +9,5 @@ public interface IController
     public enum Direction { Left, Right };
     public Direction AttackDirection { set; }
 
-    public void GetTurn(List<Piece> myPieces, List<Piece> opponentPieces);
+    public void GetTurn(IEnumerable<Piece> myPieces, IEnumerable<Piece> opponentPieces);
 }
