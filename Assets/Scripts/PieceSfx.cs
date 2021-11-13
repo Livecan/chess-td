@@ -9,16 +9,14 @@ public class PieceSfx : MonoBehaviour
     [SerializeField] AudioClip walkingClip;
     AudioSource audioSource;
 
-    Piece piece;
-
     private void Start()
     {
         if (audioSource == null)
         {
-            audioSource = GetComponent<AudioSource>(); //GameObject.Find("Audio Player").GetComponent<AudioSource>();
+            audioSource = GetComponent<AudioSource>();
         }
 
-        piece = GetComponentInParent<Piece>();
+        Piece piece = gameObject.GetComponentInParent<Piece>();
         piece.OnAttacked.AddListener(PlayOnAttacked);
         piece.OnStartMove.AddListener(PlayOnWalking);
         piece.OnFinishedMove.AddListener(StopPlayback);

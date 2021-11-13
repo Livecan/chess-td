@@ -8,13 +8,12 @@ public class PowerUpSfx : MonoBehaviour
 
     private void Start()
     {
-
         PowerUp powerUp = GetComponentInParent<PowerUp>();
         powerUp.OnDestroyEvent.AddListener(PlayOnCollected);
     }
 
     private void PlayOnCollected()
     {
-        GetComponent<AudioSource>().PlayOneShot(collectPowerUpClip);
+        GameManager.Manager.GetComponentInChildren<AudioSource>().PlayOneShot(collectPowerUpClip);
     }
 }
