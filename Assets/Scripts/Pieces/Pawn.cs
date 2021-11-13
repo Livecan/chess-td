@@ -18,6 +18,8 @@ public class Pawn : Piece
         }
     }
 
+    public override PieceType Type => PieceType.Pawn;
+
     protected override void Start()
     {
         base.Start();

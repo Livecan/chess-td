@@ -7,6 +7,8 @@ public class Queen : Piece
 {
     private int moveLength = 3;
 
+    public override PieceType Type => PieceType.Queen;
+
     public override List<Position> GetAvailablePositions()
     {
         List<Piece> allPieces = new List<Piece>(FindObjectsOfType<Piece>());

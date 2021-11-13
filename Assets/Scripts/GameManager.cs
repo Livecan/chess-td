@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -13,6 +14,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject playerController;
     [SerializeField] private GameObject opponentController;
 
+    
+
     private ISpawnManager m_powerUpSpawnManager;
 
     private int m_turnIndex = 1;
@@ -24,6 +27,7 @@ public class GameManager : MonoBehaviour
 
     public UnityEvent OnStartGame { get; } = new UnityEvent();
 
+    #region static Manager reference
     private static GameManager gameManager;
 
     public static GameManager Manager
@@ -37,6 +41,7 @@ public class GameManager : MonoBehaviour
             return gameManager;
         }
     }
+    #endregion
 
     // Start is called before the first frame update
     void Start()
@@ -98,12 +103,18 @@ public class GameManager : MonoBehaviour
             }
         );
 
+        VictoryCondition victoryCondition = GetComponent<VictoryCondition>();
+
         m_playerPiecesPrefabs.ForEach(piece => {
             piece.OnFinishedMove.AddListener(() => NextTurn());
+            piece.OnFinishedMove.AddListener(() => victoryCondition.CheckVictoryCondition(false));
             piece.OnKill.AddListener(playerRewardManager.AddKill);
         });
 
-        m_opponentPiecesPrefabs.ForEach(piece => piece.OnFinishedMove.AddListener(() => NextTurn()));
+        m_opponentPiecesPrefabs.ForEach(piece => {
+            piece.OnFinishedMove.AddListener(() => NextTurn());
+            piece.OnFinishedMove.AddListener(() => victoryCondition.CheckVictoryCondition(true));
+        });
 
         for (int i = 0; i < 3; i++)
         {
@@ -170,5 +181,15 @@ public class GameManager : MonoBehaviour
             opponentController.GetComponent<AIController>().GetTurn(m_opponentActivePieces.ToList(), m_playerActivePieces.ToList());
         }
 
+    }
+
+    public void LoseGame()
+    {
+        Debug.Log("Game Lost!");
+    }
+
+    internal void WinGame()
+    {
+        Debug.Log("Game Won!");
     }
 }
