@@ -179,8 +179,6 @@ public class GameManager : MonoBehaviour
 
         HasExtraTurn = false;
 
-        Debug.Log("Player turn: " + m_turnIndex);
-
         if (m_turnIndex == 0)
         {
             opponentController.GetComponent<ISpawnManager>().Spawn();

@@ -29,7 +29,6 @@ public class RewardManager : MonoBehaviour, ISpawnManager
     public void AddKill(Piece piece)
     {
         Balance += piece.Strength;
-        Debug.Log("Reward balance: " + Balance);
     }
 
     public void PurchaseUnit(Piece chosenPrefab)
