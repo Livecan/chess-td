@@ -125,13 +125,15 @@ public class GameManager : MonoBehaviour
 
         m_playerPiecesPrefabs.ForEach(piece => {
             piece.OnFinishedMove.AddListener(() => NextTurn());
-            piece.OnFinishedMove.AddListener(() => victoryCondition.CheckVictoryCondition(false));
+            // if player collected extra turn power, it's still his turn, otherwise, it's opponent's
+            piece.OnFinishedMove.AddListener(() => victoryCondition.CheckVictoryCondition(HasExtraTurn));
             piece.OnKill.AddListener(playerRewardManager.AddKill);
         });
 
         m_opponentPiecesPrefabs.ForEach(piece => {
             piece.OnFinishedMove.AddListener(() => NextTurn());
-            piece.OnFinishedMove.AddListener(() => victoryCondition.CheckVictoryCondition(true));
+            // if opponent collected extra turn power, it's still not player's turn, otherwise, it is
+            piece.OnFinishedMove.AddListener(() => victoryCondition.CheckVictoryCondition(!HasExtraTurn));
         });
 
         for (int i = 0; i < 3; i++)
