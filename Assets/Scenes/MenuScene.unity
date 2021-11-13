@@ -511,7 +511,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 2.399994, y: -154}
-  m_SizeDelta: {x: 693.9, y: 100}
+  m_SizeDelta: {x: 1062.7, y: 100}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1021049680
 MonoBehaviour:
@@ -533,7 +533,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Chess 2.0
+  m_text: Livecan's Chess
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
