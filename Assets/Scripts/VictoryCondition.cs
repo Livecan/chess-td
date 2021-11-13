@@ -19,7 +19,7 @@ public class VictoryCondition : MonoBehaviour
 
         IEnumerable<Piece> playerPieces = GameManager.Manager.PlayerPieces;
 
-        IEnumerable<Piece> playerPawnsInOpponentSpawn = playerPieces.Where(piece => piece.Position.Column == GameManager.Manager.FieldColumns - 1);
+        IEnumerable<Piece> playerPawnsInOpponentSpawn = playerPieces.Where(piece => piece.Type == Piece.PieceType.Pawn && piece.Position.Column == GameManager.Manager.FieldColumns - 1);
 
         // the player wins if he has pawn on the 5 furthest opponent tiles
         if (playerPawnsInOpponentSpawn.Count() == GameManager.Manager.FieldRows)
