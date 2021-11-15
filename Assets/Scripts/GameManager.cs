@@ -124,14 +124,14 @@ public class GameManager : MonoBehaviour
         VictoryCondition victoryCondition = GetComponent<VictoryCondition>();
 
         m_playerPiecesPrefabs.ForEach(piece => {
-            piece.OnFinishedMove.AddListener(() => NextTurn());
+            piece.OnFinishedMove.AddListener(() => GetNextTurn());
             // if player collected extra turn power, it's still his turn, otherwise, it's opponent's
             piece.OnFinishedMove.AddListener(() => victoryCondition.CheckVictoryCondition(HasExtraTurn));
             piece.OnKill.AddListener(playerRewardManager.AddKill);
         });
 
         m_opponentPiecesPrefabs.ForEach(piece => {
-            piece.OnFinishedMove.AddListener(() => NextTurn());
+            piece.OnFinishedMove.AddListener(() => GetNextTurn());
             // if opponent collected extra turn power, it's still not player's turn, otherwise, it is
             piece.OnFinishedMove.AddListener(() => victoryCondition.CheckVictoryCondition(!HasExtraTurn));
         });
@@ -144,23 +144,23 @@ public class GameManager : MonoBehaviour
 
         OnInitializeGame.Invoke();
 
-        NextTurn();
+        GetNextTurn();
     }
 
     // Initializes controller's with necessary values
     private void InitializeController(IController controller, IController.Direction attackDirection)
     {
-        controller.TurnCallback = NextTurn;
+        controller.TurnCallback = ExecuteNextTurn;
         controller.AttackDirection = attackDirection;
 
     }
 
     // Performs the given turn if it is valid
-    void NextTurn(Turn turn)
+    void ExecuteNextTurn(Turn turn)
     {
         if (!turn.Piece.GetAvailablePositions().Contains(turn.Position) && !turn.Piece.GetAvailablePositions().Contains(turn.AttackedPiece?.Position))
         {
-            NextTurn(false);
+            GetNextTurn(false);
         }
         else
         {
@@ -176,7 +176,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Starts a turn for the next player (or asks the current player for the correct turn)
-    void NextTurn(bool nextPlayer = true)
+    void GetNextTurn(bool nextPlayer = true)
     {
         if (nextPlayer && !HasExtraTurn)
         {
