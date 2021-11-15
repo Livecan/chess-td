@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Events;
 
+// INHERITANCE
 public class Countdown
 {
     protected UnityEvent OnZeroCountdown { get; } = new UnityEvent();

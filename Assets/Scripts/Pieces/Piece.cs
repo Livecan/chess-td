@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+// INHERITANCE - from PositionedObject, see Pawn, Rook and Queen inheriting from this object
+// POLYMORPHISM - see virtual GetAvailablePositions
+// ENCAPSULATION - see getters, setters, especially Events
+// ABSTRACTION - see hiding moving implementation and exposing GoTo methods
 public abstract class Piece : PositionedObject
 {
     public bool IsPlayer { get => gameObject.CompareTag("Player"); }

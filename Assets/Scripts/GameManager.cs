@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
+// ENCAPSULATION - see getters, setters, especially Events
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject tilePrefab;

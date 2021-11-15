@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+// INHERITANCE
+// POLYMORPHISM - see virtual method
 // Extend this class when creating a custom PowerUp script - contains logic for positioning the 3D object
 public abstract class PowerUp : PositionedObject
 {
