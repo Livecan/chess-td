@@ -7,6 +7,7 @@ using UnityEngine.Events;
 
 public abstract class Piece : PositionedObject
 {
+    public bool IsPlayer { get => gameObject.CompareTag("Player"); }
     public enum PieceType { Pawn, Rook, Queen };
     public abstract PieceType Type { get; }
 

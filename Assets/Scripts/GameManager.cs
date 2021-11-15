@@ -18,26 +18,27 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            return FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Player"));
+            return FindObjectsOfType<Piece>().Where(piece => piece.IsPlayer);
         }
     }
-
     public IEnumerable<Piece> OpponentPieces
     {
         get
         {
-            return FindObjectsOfType<Piece>().Where(piece => piece.gameObject.CompareTag("Opponent"));
+            return FindObjectsOfType<Piece>().Where(piece => !piece.IsPlayer);
         }
     }
 
     private ISpawnManager m_powerUpSpawnManager;
 
     private int m_turnIndex = 1;
-
     public bool HasExtraTurn { get; set; }
 
     public int FieldColumns { get; private set; } = 9;
     public int FieldRows { get; private set; } = 5;
+
+    // receives isPlayer => true as parameter if it's the end of player's turn
+    public UnityEvent<bool> OnFinishedTurn { get; } = new UnityEvent<bool>();
 
     public UnityEvent OnInitializeGame { get; } = new UnityEvent();
 
@@ -125,6 +126,7 @@ public class GameManager : MonoBehaviour
 
         m_playerPiecesPrefabs.ForEach(piece => {
             piece.OnFinishedMove.AddListener(() => GetNextTurn());
+            piece.OnFinishedMove.AddListener(() => OnFinishedTurn.Invoke(true));
             // if player collected extra turn power, it's still his turn, otherwise, it's opponent's
             piece.OnFinishedMove.AddListener(() => victoryCondition.CheckVictoryCondition(HasExtraTurn));
             piece.OnKill.AddListener(playerRewardManager.AddKill);
@@ -132,6 +134,7 @@ public class GameManager : MonoBehaviour
 
         m_opponentPiecesPrefabs.ForEach(piece => {
             piece.OnFinishedMove.AddListener(() => GetNextTurn());
+            piece.OnFinishedMove.AddListener(() => OnFinishedTurn.Invoke(false));
             // if opponent collected extra turn power, it's still not player's turn, otherwise, it is
             piece.OnFinishedMove.AddListener(() => victoryCondition.CheckVictoryCondition(!HasExtraTurn));
         });

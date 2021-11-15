@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class DistanceBonus : Countdown
 {
@@ -9,6 +10,14 @@ public class DistanceBonus : Countdown
     public int Bonus { get => m_bonus; }
 
     Piece m_piece;
+
+    private void DoConditionalCountdown(bool isPlayer)
+    {
+        if (isPlayer == m_piece.IsPlayer)
+        {
+            DoCountdown();
+        }
+    }
 
     public static DistanceBonus Create(Piece pieceToAssignTo)
     {
@@ -23,14 +32,24 @@ public class DistanceBonus : Countdown
 
         m_piece.DistanceBonus = this;
 
-        m_piece.OnFinishedMove.AddListener(DoCountdown);
+        GameManager.Manager.OnFinishedTurn.AddListener(DoConditionalCountdown);
+
+        m_piece.OnAttacked.AddListener(
+            (isDestroyed) =>
+            {
+                if (isDestroyed)
+                {
+                    Destroy();
+                }
+            }
+        );
 
         this.OnZeroCountdown.AddListener(this.Destroy);
     }
 
     public void Destroy()
     {
-        m_piece.OnFinishedMove.RemoveListener(DoCountdown);
+        GameManager.Manager.OnFinishedTurn.RemoveListener(DoConditionalCountdown);
         m_piece.DistanceBonus = null;
     }
 }

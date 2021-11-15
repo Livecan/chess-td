@@ -11,6 +11,14 @@ public class StrengthBonus : Countdown
 
     private Piece m_piece;
 
+    private void DoConditionalCountdown(bool isPlayer)
+    {
+        if (isPlayer == m_piece.IsPlayer)
+        {
+            DoCountdown();
+        }
+    }
+
     public static StrengthBonus Create(Piece pieceToAssignTo)
     {
         return new StrengthBonus(pieceToAssignTo);
@@ -22,12 +30,25 @@ public class StrengthBonus : Countdown
 
         m_piece.AddStrengthBonus(this);
 
-        m_piece.OnFinishedMove.AddListener(DoCountdown);
+        GameManager.Manager.OnFinishedTurn.AddListener(DoConditionalCountdown);
 
-        this.OnZeroCountdown.AddListener(() =>
-        {
-            m_piece.OnFinishedMove.RemoveListener(DoCountdown);
-            m_piece.RemoveStrengthBonus(this);
-        });
+        m_piece.OnAttacked.AddListener(
+            (isDestroyed) =>
+            {
+                if (isDestroyed)
+                {
+                    Destroy();
+                }
+            }
+        );
+
+        this.OnZeroCountdown.AddListener(Destroy);
+    }
+
+    private void Destroy()
+    {
+
+        GameManager.Manager.OnFinishedTurn.RemoveListener(DoConditionalCountdown);
+        m_piece.RemoveStrengthBonus(this);
     }
 }
